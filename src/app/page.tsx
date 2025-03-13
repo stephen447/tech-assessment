@@ -1,3 +1,3 @@
-export default function Home() {
-  return <p className="text-amber-300">Hello World</p>;
+export default function App() {
+  return <div>Test</div>;
 }
