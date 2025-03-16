@@ -1,27 +1,61 @@
+schema {
+  query: Query
+}
+
 type Query {
-  countries: [Country!]!
-  continent(code: String!): Continent
+  ethereum: Ethereum
 }
 
-type Country {
-  name: String!
-  code: String!
-  native: String!
-  phone: String!
-  capital: String
-  currency: String
-  languages: [Language!]!
-  continent: Continent!
+type Ethereum {
+  dexTrades(
+    options: QueryOptions
+    quoteCurrency: EthereumCurrencySelector
+  ): [EthereumDexTrades!]
 }
 
-type Continent {
-  code: String!
-  name: String!
-  countries: [Country!]!
+input QueryOptions {
+  limit: Int
+  offset: Int
+  desc: String
+  asc: String
 }
 
-type Language {
-  code: String!
-  name: String!
-  native: String!
+input EthereumCurrencySelector {
+  is: String
+  not: String
+  in: [String!]
+  notIn: [String!]
+}
+
+type EthereumDexTrades {
+  baseCurrency: Currency
+  tradeAmount(in: BaseCurrencyEnum): Float
+  count: Int
+}
+
+type Currency {
+  symbol: String
+  name: String
+  address: String
+}
+
+enum BaseCurrencyEnum {
+  USD
+  ETH
+  BTC
+  EUR
+  JPY
+  # Other supported currencies
+}
+
+# Additional types that might be referenced
+type DateTime {
+  date: String
+  time: String
+}
+
+input DateSelector {
+  is: String
+  since: String
+  till: String
 }

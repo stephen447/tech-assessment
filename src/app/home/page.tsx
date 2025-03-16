@@ -15,10 +15,20 @@ const HomePage = () => {
     return <p>Loading...</p>; // Avoids hydration mismatch
   }
   const query = graphql`
-    query pageCountriesQuery {
-      countries {
-        name
-        capital
+    query pagePopularCryptosQuery {
+      ethereum {
+        dexTrades(
+          options: { limit: 5, desc: "tradeAmount" }
+          quoteCurrency: { is: "0xdAC17F958D2ee523a2206206994597C13D831ec7" } # USDT
+        ) {
+          baseCurrency {
+            symbol
+            name
+            address
+          }
+          tradeAmount(in: USD)
+          trades: count
+        }
       }
     }
   `;
