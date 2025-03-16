@@ -5,7 +5,7 @@ async function fetchGraphQL(params: any, variables: any) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + process.env.NEXT_PUBLIC_BITQUERY_API_KEY,
+      Authorization: "Bearer " + process.env.NEXT_PUBLIC_API_URL,
     },
     body: JSON.stringify({
       query: params.text,
