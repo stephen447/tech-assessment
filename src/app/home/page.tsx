@@ -1,41 +1,51 @@
 "use client";
-import { useState } from "react";
-import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay";
 import { RelayEnvironmentProvider } from "react-relay/hooks";
 import RelayEnvironment from "../relayEnvironment";
+import { useState, useEffect } from "react";
+import { graphql, useLazyLoadQuery } from "react-relay";
 
-// Graph ql query for fetch th eprice of the 'popular' cryptos
-const query = graphql`
-  query pageCountriesQuery {
-    countries {
-      name
-      capital
-    }
+const HomePage = () => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return <p>Loading...</p>; // Avoids hydration mismatch
   }
-`;
+  const query = graphql`
+    query pageCountriesQuery {
+      countries {
+        name
+        capital
+      }
+    }
+  `;
 
-const PopularCryptoList = () => {
-  const data = useLazyLoadQuery(query, {});
-  console.log();
+  const PopularCryptoList = () => {
+    const data = useLazyLoadQuery(query, {});
+
+    return (
+      <>
+        <div>
+          <h1>Bitcoin</h1>
+          <p>Price</p>
+        </div>
+
+        <h1>Ethereum</h1>
+        <h1>XRP</h1>
+        <h1>Solana</h1>
+        <h1>Cardano</h1>
+      </>
+    );
+  };
+
   return (
-    <>
-      <div>
-        <h1>Bitcoin</h1>
-        <p>Price</p>
-      </div>
-
-      <h1>Ethereum</h1>
-      <h1>XRP</h1>
-      <h1>Solana</h1>
-      <h1>Cardano</h1>
-    </>
+    <RelayEnvironmentProvider environment={RelayEnvironment}>
+      <PopularCryptoList />
+    </RelayEnvironmentProvider>
   );
 };
-
-const HomePage = () => (
-  <RelayEnvironmentProvider environment={RelayEnvironment}>
-    <PopularCryptoList />
-  </RelayEnvironmentProvider>
-);
 
 export default HomePage;
