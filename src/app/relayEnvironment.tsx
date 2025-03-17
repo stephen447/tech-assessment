@@ -1,7 +1,7 @@
 import { Environment, Network, RecordSource, Store } from "relay-runtime";
 
 async function fetchGraphQL(params: any, variables: any) {
-  const response = await fetch("https://graphql.bitquery.io", {
+  const response = await fetch("https://streaming.bitquery.io/graphql", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

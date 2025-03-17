@@ -1,3 +1,46 @@
-export default function App() {
-  return <div>Test</div>;
-}
+"use client";
+import { RelayEnvironmentProvider } from "react-relay/hooks";
+import RelayEnvironment from "./relayEnvironment";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import PopularCryptoList from "../components/PopularCryptoList";
+
+const App = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    router.push(`/search?query=${encodeURIComponent(searchTerm.trim())}`);
+  };
+
+  return (
+    <RelayEnvironmentProvider environment={RelayEnvironment}>
+      <div className="w-full h-[100%] text-white shadow-lg">
+        <p className="text-4xl font-bold text-center p-4">Crypto Hub</p>
+        {/* Search Bar */}
+        <form onSubmit={handleSearch} className="p-4 flex justify-center">
+          <input
+            type="text"
+            placeholder="Search cryptocurrency..."
+            className="p-2 rounded-lg text-black w-80"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <button
+            type="submit"
+            className="ml-2 bg-blue-500 px-4 py-2 rounded-lg text-white"
+          >
+            Search
+          </button>
+        </form>
+
+        {/* Crypto List */}
+        <PopularCryptoList />
+      </div>
+    </RelayEnvironmentProvider>
+  );
+};
+
+export default App;

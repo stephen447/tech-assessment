@@ -3,59 +3,85 @@ schema {
 }
 
 type Query {
-  ethereum: Ethereum
+  EVM(network: EVM_Network!): EVMData
 }
 
-type Ethereum {
-  dexTrades(
-    options: QueryOptions
-    quoteCurrency: EthereumCurrencySelector
-  ): [EthereumDexTrades!]
+# Enum for network selection
+enum EVM_Network {
+  eth
+  bsc
+  polygon
+  # other networks...
 }
 
-input QueryOptions {
-  limit: Int
-  offset: Int
-  desc: String
-  asc: String
+type EVMData {
+  DEXTradeByTokens(
+    where: DEXTradeByTokensWhereInput
+    orderBy: OrderByInput
+    limit: LimitInput
+  ): [DEXTradeByTokensResult]
 }
 
-input EthereumCurrencySelector {
-  is: String
-  not: String
-  in: [String!]
-  notIn: [String!]
+input DEXTradeByTokensWhereInput {
+  Block: BlockWhereInput
+  Trade: TradeWhereInput
 }
 
-type EthereumDexTrades {
-  baseCurrency: Currency
-  tradeAmount(in: BaseCurrencyEnum): Float
+input BlockWhereInput {
+  Time: TimeWhereInput
+}
+
+input TimeWhereInput {
+  since: String
+}
+
+input TradeWhereInput {
+  AmountInUSD: AmountInUSDWhereInput
+}
+
+input AmountInUSDWhereInput {
+  gt: String
+}
+
+input OrderByInput {
+  descendingByField: String
+}
+
+input LimitInput {
   count: Int
 }
 
-type Currency {
-  symbol: String
-  name: String
-  address: String
+# Define field name enums for aggregation functions
+enum TradeFieldEnum {
+  Trade_AmountInUSD
+  Trade_Buyer
+  # Add other field names as needed
 }
 
-enum BaseCurrencyEnum {
-  USD
-  ETH
-  BTC
-  EUR
-  JPY
-  # Other supported currencies
+# Define field name enum for maximum parameter
+enum BlockTimeEnum {
+  Block_Time
 }
 
-# Additional types that might be referenced
-type DateTime {
-  date: String
-  time: String
+type DEXTradeByTokensResult {
+  Trade: TradeResult
+  volume_usd: Float
+  unique_traders: Int
+  trade_count: Int
+  # Define sum and uniq to accept enum values
+  sum(of: TradeFieldEnum!): Float
+  uniq(of: TradeFieldEnum!): Int
+  count: Int
 }
 
-input DateSelector {
-  is: String
-  since: String
-  till: String
+type TradeResult {
+  Currency: CurrencyResult
+  # Define PriceInUSD to accept enum for maximum
+  PriceInUSD(maximum: BlockTimeEnum!): Float
+}
+
+type CurrencyResult {
+  Symbol: String
+  Name: String
+  SmartContract: String
 }

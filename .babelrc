@@ -1,9 +1,4 @@
 {
-  "presets": [
-    "next/babel"
-  ],
-  "plugins": [
-    "relay",
-    "graphql-tag"
-  ]
+  "presets": ["next/babel", "@babel/preset-typescript"],
+  "plugins": ["relay", "graphql-tag"]
 }
