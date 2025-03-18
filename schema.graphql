@@ -14,6 +14,9 @@ enum EVM_Network {
   # other networks...
 }
 
+# Define DateTime scalar for date handling
+scalar DateTime
+
 type EVMData {
   DEXTradeByTokens(
     where: DEXTradeByTokensWhereInput
@@ -32,11 +35,20 @@ input BlockWhereInput {
 }
 
 input TimeWhereInput {
-  since: String
+  since: DateTime
 }
 
 input TradeWhereInput {
   AmountInUSD: AmountInUSDWhereInput
+  Currency: CurrencyWhereInput
+}
+
+input CurrencyWhereInput {
+  Name: NameWhereInput
+}
+
+input NameWhereInput {
+  includesCaseInsensitive: String
 }
 
 input AmountInUSDWhereInput {
@@ -55,6 +67,7 @@ input LimitInput {
 enum TradeFieldEnum {
   Trade_AmountInUSD
   Trade_Buyer
+  Trade_Side_AmountInUSD
   # Add other field names as needed
 }
 
