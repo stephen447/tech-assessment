@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<530115e0351d16dfa8956f3ec75d4c67>>
+ * @generated SignedSource<<0972e0f72ba993c08615c1810f596985>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -120,7 +120,7 @@ v1 = [
           {
             "alias": null,
             "args": null,
-            "concreteType": "TradeResult",
+            "concreteType": "TradeByTokenResult",
             "kind": "LinkedField",
             "name": "Trade",
             "plural": false,

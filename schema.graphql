@@ -3,7 +3,21 @@ schema {
 }
 
 type Query {
-  EVM(network: EVM_Network!): EVMData
+  EVM(network: EVM_Network!, dataset: EVM_Dataset): EVMData
+}
+
+# Define enum for limitBy field names
+enum LimitByFieldEnum {
+  Block_Date
+  Block_Time
+  Trade_Buy_Currency_SmartContract
+  Trade_Sell_Currency_SmartContract
+  # Add other field names as needed
+}
+
+input LimitByInput {
+  by: LimitByFieldEnum # Change from String to the enum
+  count: Int
 }
 
 # Enum for network selection
@@ -14,17 +28,34 @@ enum EVM_Network {
   # other networks...
 }
 
+# Enum for dataset selection
+enum EVM_Dataset {
+  combined
+  realtime
+  archive
+}
+
 # Define DateTime scalar for date handling
 scalar DateTime
 
 type EVMData {
+  # Keep the original DEXTradeByTokens for backward compatibility
   DEXTradeByTokens(
     where: DEXTradeByTokensWhereInput
     orderBy: OrderByInput
     limit: LimitInput
   ): [DEXTradeByTokensResult]
+
+  # Add the new DEXTrades endpoint
+  DEXTrades(
+    where: DEXTradesWhereInput
+    orderBy: OrderByInput
+    limit: LimitInput
+    limitBy: LimitByInput # Add the missing limitBy argument
+  ): [DEXTradesResult]
 }
 
+# Original inputs for DEXTradeByTokens
 input DEXTradeByTokensWhereInput {
   Block: BlockWhereInput
   Trade: TradeWhereInput
@@ -36,6 +67,7 @@ input BlockWhereInput {
 
 input TimeWhereInput {
   since: DateTime
+  till: DateTime
 }
 
 input TradeWhereInput {
@@ -45,9 +77,16 @@ input TradeWhereInput {
 
 input CurrencyWhereInput {
   Name: NameWhereInput
+  SmartContract: SmartContractWhereInput
+  Symbol: SymbolWhereInput # Add Symbol filter
 }
 
 input NameWhereInput {
+  includesCaseInsensitive: String
+}
+
+input SymbolWhereInput { # Add this new input type
+  is: String
   includesCaseInsensitive: String
 }
 
@@ -55,12 +94,31 @@ input AmountInUSDWhereInput {
   gt: String
 }
 
+input SmartContractWhereInput {
+  is: String
+}
+
 input OrderByInput {
   descendingByField: String
+  ascendingByField: String
 }
 
 input LimitInput {
   count: Int
+}
+
+# New inputs for DEXTrades
+input DEXTradesWhereInput {
+  Block: BlockWhereInput
+  Trade: DEXTradeWhereInput
+}
+
+input DEXTradeWhereInput {
+  Buy: BuySellWhereInput
+}
+
+input BuySellWhereInput {
+  Currency: CurrencyWhereInput # This will now include Symbol filter
 }
 
 # Define field name enums for aggregation functions
@@ -68,29 +126,47 @@ enum TradeFieldEnum {
   Trade_AmountInUSD
   Trade_Buyer
   Trade_Side_AmountInUSD
+  Block_Time
   # Add other field names as needed
 }
 
-# Define field name enum for maximum parameter
-enum BlockTimeEnum {
-  Block_Time
-}
-
+# Original result types for DEXTradeByTokens
 type DEXTradeByTokensResult {
-  Trade: TradeResult
+  Trade: TradeByTokenResult
+  # Define these fields exactly as they're used in your components
   volume_usd: Float
   unique_traders: Int
   trade_count: Int
-  # Define sum and uniq to accept enum values
+  count: Int
+  # Add these fields with their arguments
   sum(of: TradeFieldEnum!): Float
   uniq(of: TradeFieldEnum!): Int
-  count: Int
+}
+
+type TradeByTokenResult {
+  Currency: CurrencyResult
+  # Define PriceInUSD with the maximum argument
+  PriceInUSD(maximum: TradeFieldEnum): Float
+}
+
+# New result types for DEXTrades
+type DEXTradesResult {
+  Block: BlockResult
+  Trade: TradeResult
+}
+
+type BlockResult {
+  Date: String
+  Time: DateTime
 }
 
 type TradeResult {
+  Buy: BuySellResult
+}
+
+type BuySellResult {
   Currency: CurrencyResult
-  # Define PriceInUSD to accept enum for maximum
-  PriceInUSD(maximum: BlockTimeEnum!): Float
+  Price: Float
 }
 
 type CurrencyResult {

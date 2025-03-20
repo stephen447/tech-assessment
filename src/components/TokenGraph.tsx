@@ -1,0 +1,61 @@
+"use client";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+
+//TypeScript types
+interface BlockData {
+  Date: string;
+  Time: string;
+}
+
+interface TradeData {
+  Buy: {
+    Currency: {
+      Name: string;
+      Symbol: string;
+    };
+    Price: number;
+  };
+}
+
+interface DEXTrade {
+  Block: BlockData;
+  Trade: TradeData;
+}
+
+interface TokenGraphProps {
+  prices: DEXTrade[];
+}
+
+const TokenGraph: React.FC<TokenGraphProps> = ({ prices }) => {
+  // Format data for the graph
+  const chartData = prices.map(({ Block, Trade }) => ({
+    date: new Date(Block.Time).toLocaleDateString(),
+    price: Trade.Buy.Price,
+  }));
+
+  return (
+    <div className="w-full h-[400px] mt-6">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={chartData}>
+          <XAxis dataKey="date" tick={{ fill: "#fff" }} />
+          <YAxis tick={{ fill: "#fff" }} /> <Tooltip />
+          <Line
+            type="monotone"
+            dataKey="price"
+            stroke="#4CAF50"
+            strokeWidth={2}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+export default TokenGraph;

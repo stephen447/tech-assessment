@@ -43,7 +43,7 @@ const SearchResults = () => {
   const data = useLazyLoadQuery(
     searchQuery,
     { coinName },
-    { fetchPolicy: "store-or-network" } // Prevents redundant network calls
+    { fetchPolicy: "store-or-network" }
   );
 
   if (!isClient) {

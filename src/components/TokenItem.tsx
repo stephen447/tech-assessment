@@ -24,7 +24,9 @@ const TokenItem: React.FC<TokenItemProps> = ({ trade }) => {
    * Redirects to the token page when the token item is clicked
    */
   const handleClick = () => {
-    router.push(`/${trade.Trade.Currency.Name.toLowerCase()}`);
+    router.push(
+      `/token/${trade.Trade.Currency.Name.toLowerCase()}?token=${trade.Trade.Currency.Symbol.toLowerCase()}`
+    );
   };
 
   return (
