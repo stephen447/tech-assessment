@@ -5,13 +5,20 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import PopularCryptoList from "../components/PopularCryptoList";
 
+/**
+ * Main App component
+ */
 const App = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
 
+  /**
+   * Handles the search form submission
+   * @param e Form event
+   * @returns void
+   * */
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-
     router.push(`/search?query=${encodeURIComponent(searchTerm.trim())}`);
   };
 
@@ -30,13 +37,14 @@ const App = () => {
           />
           <button
             type="submit"
-            className="ml-2 bg-blue-500 px-4 py-2 rounded-lg text-white"
+            className="ml-2 bg-blue-500 px-4 py-2 rounded-lg text-white hover:bg-blue-600 transition"
           >
             Search
           </button>
         </form>
 
         {/* Crypto List */}
+
         <PopularCryptoList />
       </div>
     </RelayEnvironmentProvider>
