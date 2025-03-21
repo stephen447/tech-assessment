@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ffd7d9dbc9379a835c4841fbbe501ad4>>
+ * @generated SignedSource<<224c520b5e2d67541e85948ec164eda9>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,8 +11,8 @@
 import { ConcreteRequest } from 'relay-runtime';
 export type pageTokenQuery$variables = {
   since: any;
-  symbol: string;
   till: any;
+  tokenSymbol: string;
 };
 export type pageTokenQuery$data = {
   readonly EVM: {
@@ -48,12 +48,12 @@ var v0 = {
 v1 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "symbol"
+  "name": "till"
 },
 v2 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "till"
+  "name": "tokenSymbol"
 },
 v3 = [
   {
@@ -82,7 +82,7 @@ v3 = [
             "kind": "Literal",
             "name": "limit",
             "value": {
-              "count": 10
+              "count": 30
             }
           },
           {
@@ -135,7 +135,7 @@ v3 = [
                               {
                                 "kind": "Variable",
                                 "name": "includesCaseInsensitive",
-                                "variableName": "symbol"
+                                "variableName": "tokenSymbol"
                               }
                             ],
                             "kind": "ObjectValue",
@@ -273,25 +273,25 @@ return {
   "kind": "Request",
   "operation": {
     "argumentDefinitions": [
-      (v1/*: any*/),
+      (v2/*: any*/),
       (v0/*: any*/),
-      (v2/*: any*/)
+      (v1/*: any*/)
     ],
     "kind": "Operation",
     "name": "pageTokenQuery",
     "selections": (v3/*: any*/)
   },
   "params": {
-    "cacheID": "d6c82d7795aef73ab027e813949c476f",
+    "cacheID": "8ab3abf6ecf9bcd8524cf0a2a05bf717",
     "id": null,
     "metadata": {},
     "name": "pageTokenQuery",
     "operationKind": "query",
-    "text": "query pageTokenQuery(\n  $symbol: String!\n  $since: DateTime!\n  $till: DateTime!\n) {\n  EVM(network: eth, dataset: combined) {\n    DEXTrades(limit: {count: 10}, where: {Trade: {Buy: {Currency: {Symbol: {includesCaseInsensitive: $symbol}}}}, Block: {Time: {since: $since, till: $till}}}, orderBy: {ascendingByField: \"Block_Time\"}, limitBy: {by: Block_Date, count: 1}) {\n      Block {\n        Time\n        Date\n      }\n      Trade {\n        Buy {\n          Currency {\n            Symbol\n            Name\n            SmartContract\n          }\n          Price\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query pageTokenQuery(\n  $tokenSymbol: String!\n  $since: DateTime!\n  $till: DateTime!\n) {\n  EVM(network: eth, dataset: combined) {\n    DEXTrades(limit: {count: 30}, where: {Trade: {Buy: {Currency: {Symbol: {includesCaseInsensitive: $tokenSymbol}}}}, Block: {Time: {since: $since, till: $till}}}, orderBy: {ascendingByField: \"Block_Time\"}, limitBy: {by: Block_Date, count: 1}) {\n      Block {\n        Time\n        Date\n      }\n      Trade {\n        Buy {\n          Currency {\n            Symbol\n            Name\n            SmartContract\n          }\n          Price\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "8f8b9d017c13acbb8479c96564eb95b0";
+(node as any).hash = "1e5080f794c8d022ce0fd8d1aab29d14";
 
 export default node;

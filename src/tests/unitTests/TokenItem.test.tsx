@@ -35,7 +35,7 @@ describe("TokenItem Component", () => {
     const button = screen.getByRole("button");
     fireEvent.click(button);
 
-    expect(pushMock).toHaveBeenCalledWith("/bitcoin");
+    expect(pushMock).toHaveBeenCalledWith("/token/bitcoin?token=btc");
   });
 
   it("displays 'N/A' if the current price is null", () => {

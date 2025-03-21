@@ -41,19 +41,23 @@ const TokenGraph: React.FC<TokenGraphProps> = ({ prices }) => {
   }));
 
   return (
-    <div className="w-full h-[400px] mt-6">
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={chartData}>
-          <XAxis dataKey="date" tick={{ fill: "#fff" }} />
-          <YAxis tick={{ fill: "#fff" }} /> <Tooltip />
-          <Line
-            type="monotone"
-            dataKey="price"
-            stroke="#4CAF50"
-            strokeWidth={2}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+    <div className="w-full h-[400px] mt-6" data-testid="token-graph">
+      {prices.length === 0 ? (
+        <p className="text-center text-gray-400">No price data available</p>
+      ) : (
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={chartData}>
+            <XAxis dataKey="date" tick={{ fill: "#fff" }} />
+            <YAxis tick={{ fill: "#fff" }} /> <Tooltip />
+            <Line
+              type="monotone"
+              dataKey="price"
+              stroke="#4CAF50"
+              strokeWidth={2}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      )}
     </div>
   );
 };
