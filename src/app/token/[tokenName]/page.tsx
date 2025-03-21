@@ -113,7 +113,7 @@ const TokenPageContent: React.FC = () => {
       {tokenPriceData.length > 0 ? (
         <TokenGraph prices={tokenPriceData} />
       ) : (
-        <p className="text-center text-gray-400 mt-4">
+        <p className="text-center text-gray-400 mt-4" role="alert">
           No price data available for {tokenSymbol}.
         </p>
       )}

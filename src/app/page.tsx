@@ -30,16 +30,22 @@ const App: React.FC = () => {
         <Header title="Crypto Hub" />
         {/* Search Bar */}
         <form onSubmit={handleSearch} className="p-4 flex justify-center">
+          <label htmlFor="search-input" className="sr-only">
+            Search for a cryptocurrency
+          </label>
           <input
             type="text"
             placeholder="Search cryptocurrency..."
-            className="p-2 rounded-lg text-black w-80"
+            className="p-2 rounded-lg text-black w-80 focus:ring-4"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            aria-label="Enter a cryptocurrency name to search"
           />
           <button
             type="submit"
-            className="ml-2 bg-blue-500 px-4 py-2 rounded-lg text-white hover:bg-blue-600 transition"
+            role="button"
+            aria-label="Click to search for a cryptocurrency"
+            className="ml-2 bg-blue-500 px-4 py-2 rounded-lg text-white hover:bg-blue-600 transition focus:ring-4"
           >
             Search
           </button>

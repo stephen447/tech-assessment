@@ -72,7 +72,9 @@ const SearchResults: React.FC = () => {
             ) : null
           )
         ) : (
-          <p className="text-center text-gray-400">No results found</p>
+          <div className="text-center text-gray-400" role="alert">
+            No results found
+          </div>
         )}
       </div>
     </div>

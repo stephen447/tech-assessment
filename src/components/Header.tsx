@@ -13,7 +13,11 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
       role="banner"
     >
       {/* Logo with aria-label for better accessibility */}
-      <Link href="/" className="flex-shrink-0" aria-label="Go to homepage">
+      <Link
+        href="/"
+        className="flex-shrink-0 focus:ring-4"
+        aria-label="Click to go to homepage"
+      >
         <Logo size={50} />
       </Link>
 

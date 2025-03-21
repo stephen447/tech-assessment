@@ -32,11 +32,12 @@ const TokenItem: React.FC<TokenItemProps> = ({ trade }) => {
   return (
     <button
       onClick={handleClick}
-      className="p-4 bg-gray-800 rounded-lg flex justify-between items-center shadow-md border-white border-2 w-full text-left hover:bg-gray-700 transition"
+      className="p-4 bg-gray-800 rounded-lg flex justify-between items-center shadow-md border-white border-2 w-full text-left hover:bg-gray-700 transition focus:ring-4"
+      aria-label={`View details for ${trade.Trade.Currency.Name} (${trade.Trade.Currency.Symbol})`}
     >
       <div>
         <h2 className="text-lg font-semibold">{trade.Trade.Currency.Name}</h2>
-        <p className="text-sm text-gray-400">{trade.Trade.Currency.Symbol}</p>
+        <p className="text-sm text-gray-200">{trade.Trade.Currency.Symbol}</p>
       </div>
       <p className="text-green-400 font-bold">
         $

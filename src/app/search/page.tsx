@@ -3,7 +3,7 @@ import React from "react";
 import { RelayEnvironmentProvider } from "react-relay/hooks";
 import RelayEnvironment from "../relayEnvironment";
 import SearchResults from "../../components/SearchResults";
-import Header from "@/components/Header";
+import Header from "../../components/Header";
 
 const SearchPage: React.FC = () => (
   <RelayEnvironmentProvider environment={RelayEnvironment}>
