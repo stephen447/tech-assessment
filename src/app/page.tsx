@@ -1,14 +1,14 @@
 "use client";
 import { RelayEnvironmentProvider } from "react-relay/hooks";
 import RelayEnvironment from "./relayEnvironment";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
 import PopularCryptoList from "../components/PopularCryptoList";
 
 /**
  * Main App component
  */
-const App = () => {
+const App: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
 
@@ -44,8 +44,9 @@ const App = () => {
         </form>
 
         {/* Crypto List */}
-
-        <PopularCryptoList />
+        <Suspense>
+          <PopularCryptoList />
+        </Suspense>
       </div>
     </RelayEnvironmentProvider>
   );

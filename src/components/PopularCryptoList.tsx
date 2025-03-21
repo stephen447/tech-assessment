@@ -39,7 +39,7 @@ type Trade = {
   };
 };
 
-const PopularCryptoList = () => {
+const PopularCryptoList: React.FC = () => {
   const [isClient, setIsClient] = useState(false);
   const [fetchKey, setFetchKey] = useState(0);
 
@@ -55,6 +55,7 @@ const PopularCryptoList = () => {
     return () => clearInterval(intervalId);
   }, []);
 
+  // Fetching the data - forcing to get from network every time for most accurate data
   const data = useLazyLoadQuery(
     query,
     {},
