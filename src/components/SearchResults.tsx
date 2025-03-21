@@ -2,14 +2,15 @@
 import { useSearchParams } from "next/navigation";
 import { graphql, useLazyLoadQuery } from "react-relay";
 import TokenItem from "./TokenItem";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { SearchResultsQuery } from "./__generated__/SearchResultsQuery.graphql";
 
 const searchQuery = graphql`
-  query SearchResultsQuery($coinName: String!) {
+  query SearchResultsQuery($tokenName: String!) {
     EVM(network: eth) {
       DEXTradeByTokens(
         where: {
-          Trade: { Currency: { Name: { includesCaseInsensitive: $coinName } } }
+          Trade: { Currency: { Name: { includesCaseInsensitive: $tokenName } } }
           Block: { Time: { since: "2025-03-01T00:00:00Z" } }
         }
         limit: { count: 20 }
@@ -30,19 +31,19 @@ const searchQuery = graphql`
   }
 `;
 
-const SearchResults = () => {
+const SearchResults: React.FC = () => {
   const searchParams = useSearchParams();
-  const coinName = searchParams.get("query");
-
-  const [isClient, setIsClient] = useState(false);
+  const tokenName: string = searchParams.get("query") || "";
+  const [isClient, setIsClient] = useState<boolean>(false);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  const data = useLazyLoadQuery(
+  // Use the generated type from Relay
+  const data = useLazyLoadQuery<SearchResultsQuery>(
     searchQuery,
-    { coinName },
+    { tokenName: tokenName },
     { fetchPolicy: "store-or-network" }
   );
 
@@ -58,16 +59,18 @@ const SearchResults = () => {
     <div className="w-full h-full bg-gray-900 text-white p-4">
       <h2 className="text-3xl font-bold text-center">Search Results</h2>
       <p className="text-lg text-center text-gray-400">
-        Results for "{coinName}"
+        Results for "{tokenName}"
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 m-4">
-        {data?.EVM?.DEXTradeByTokens?.length > 0 ? (
-          data.EVM.DEXTradeByTokens.map((trade, index) => (
-            <div key={index}>
-              <TokenItem trade={trade} />
-            </div>
-          ))
+        {data?.EVM?.DEXTradeByTokens?.length ? (
+          data.EVM.DEXTradeByTokens.map((trade, index) =>
+            trade ? (
+              <div key={index}>
+                <TokenItem trade={trade} />
+              </div>
+            ) : null
+          )
         ) : (
           <p className="text-center text-gray-400">No results found</p>
         )}

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0972e0f72ba993c08615c1810f596985>>
+ * @generated SignedSource<<2d82667aa312dd7d357a3e3bdc0e953e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,7 +10,7 @@
 
 import { ConcreteRequest } from 'relay-runtime';
 export type SearchResultsQuery$variables = {
-  coinName: string;
+  tokenName: string;
 };
 export type SearchResultsQuery$data = {
   readonly EVM: {
@@ -38,7 +38,7 @@ var v0 = [
   {
     "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "coinName"
+    "name": "tokenName"
   }
 ],
 v1 = [
@@ -93,7 +93,7 @@ v1 = [
                           {
                             "kind": "Variable",
                             "name": "includesCaseInsensitive",
-                            "variableName": "coinName"
+                            "variableName": "tokenName"
                           }
                         ],
                         "kind": "ObjectValue",
@@ -218,16 +218,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "66a9af5151475082581e503b66dcd21a",
+    "cacheID": "69288fa6338dd68ebbcd259aaa7c2d25",
     "id": null,
     "metadata": {},
     "name": "SearchResultsQuery",
     "operationKind": "query",
-    "text": "query SearchResultsQuery(\n  $coinName: String!\n) {\n  EVM(network: eth) {\n    DEXTradeByTokens(where: {Trade: {Currency: {Name: {includesCaseInsensitive: $coinName}}}, Block: {Time: {since: \"2025-03-01T00:00:00Z\"}}}, limit: {count: 20}, orderBy: {descendingByField: \"Trade_current_price_maximum\"}) {\n      Trade {\n        Currency {\n          Name\n          Symbol\n          SmartContract\n        }\n        current_price: PriceInUSD(maximum: Block_Time)\n      }\n      volume_usd: sum(of: Trade_Side_AmountInUSD)\n      trade_count: count\n    }\n  }\n}\n"
+    "text": "query SearchResultsQuery(\n  $tokenName: String!\n) {\n  EVM(network: eth) {\n    DEXTradeByTokens(where: {Trade: {Currency: {Name: {includesCaseInsensitive: $tokenName}}}, Block: {Time: {since: \"2025-03-01T00:00:00Z\"}}}, limit: {count: 20}, orderBy: {descendingByField: \"Trade_current_price_maximum\"}) {\n      Trade {\n        Currency {\n          Name\n          Symbol\n          SmartContract\n        }\n        current_price: PriceInUSD(maximum: Block_Time)\n      }\n      volume_usd: sum(of: Trade_Side_AmountInUSD)\n      trade_count: count\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "b57a8966bc467d4bf6642b2f3d189861";
+(node as any).hash = "929f86bc3ba1ab7b881c4e0d1047c9df";
 
 export default node;

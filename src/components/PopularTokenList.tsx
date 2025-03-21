@@ -1,11 +1,11 @@
 "use client";
 import { graphql, useLazyLoadQuery } from "react-relay";
 import { useState, useEffect } from "react";
-import TokenItem from "../components/TokenItem";
+import TokenItem from "./TokenItem";
 
 // GraphQL query to fetch popular cryptocurrencies
 const query = graphql`
-  query PopularCryptoListQuery {
+  query PopularTokenListQuery {
     EVM(network: eth) {
       DEXTradeByTokens(
         where: {
@@ -39,9 +39,9 @@ type Trade = {
   };
 };
 
-const PopularCryptoList: React.FC = () => {
-  const [isClient, setIsClient] = useState(false);
-  const [fetchKey, setFetchKey] = useState(0);
+const PopularTokenList: React.FC = () => {
+  const [isClient, setIsClient] = useState<boolean>(false);
+  const [fetchKey, setFetchKey] = useState<number>(0);
 
   useEffect(() => {
     setIsClient(true);
@@ -83,4 +83,4 @@ const PopularCryptoList: React.FC = () => {
   );
 };
 
-export default PopularCryptoList;
+export default PopularTokenList;

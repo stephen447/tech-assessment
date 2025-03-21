@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen, waitFor, cleanup } from "@testing-library/react";
 import { RelayEnvironmentProvider } from "react-relay/hooks";
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils";
-import PopularCryptoList from "../../components/PopularCryptoList";
+import PopularCryptoList from "../../components/PopularTokenList";
 import { useRouter } from "next/navigation";
 import { act } from "@testing-library/react";
 

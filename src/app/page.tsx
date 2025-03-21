@@ -3,13 +3,13 @@ import { RelayEnvironmentProvider } from "react-relay/hooks";
 import RelayEnvironment from "./relayEnvironment";
 import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
-import PopularCryptoList from "../components/PopularCryptoList";
+import PopularTokenList from "../components/PopularTokenList";
 
 /**
  * Main App component
  */
 const App: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const router = useRouter();
 
   /**
@@ -44,9 +44,9 @@ const App: React.FC = () => {
         </form>
 
         {/* Crypto List */}
-        <Suspense>
-          <PopularCryptoList />
-        </Suspense>
+        {/* <Suspense> */}
+        <PopularTokenList />
+        {/* </Suspense> */}
       </div>
     </RelayEnvironmentProvider>
   );
