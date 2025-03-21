@@ -4,6 +4,7 @@ import { graphql, useLazyLoadQuery } from "react-relay";
 import TokenItem from "./TokenItem";
 import React, { useEffect, useState } from "react";
 import { SearchResultsQuery } from "./__generated__/SearchResultsQuery.graphql";
+import LoadingSpinner from "./LoadingSpinner";
 
 const searchQuery = graphql`
   query SearchResultsQuery($tokenName: String!) {
@@ -49,9 +50,9 @@ const SearchResults: React.FC = () => {
 
   if (!isClient) {
     return (
-      <p className="flex items-center text-4xl h-[100%] text-center justify-center">
-        Loading...
-      </p>
+      <div className="w-full h-full bg-gray-900 text-white shadow-lg">
+        <LoadingSpinner />
+      </div>
     );
   }
 

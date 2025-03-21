@@ -10,7 +10,7 @@ jest.mock("next/navigation", () => ({
 }));
 
 // Mocking the PopularCryptoList to ensure it renders correctly
-jest.mock("../../components/PopularCryptoList", () => ({
+jest.mock("../../components/PopularTokenList", () => ({
   __esModule: true,
   default: () => <div>Popular Cryptos Mocked</div>, // Temporary mocked version
 }));

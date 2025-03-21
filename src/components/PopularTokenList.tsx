@@ -2,6 +2,7 @@
 import { graphql, useLazyLoadQuery } from "react-relay";
 import { useState, useEffect } from "react";
 import TokenItem from "./TokenItem";
+import LoadingSpinner from "./LoadingSpinner";
 
 // GraphQL query to fetch popular cryptocurrencies
 const query = graphql`
@@ -64,9 +65,9 @@ const PopularTokenList: React.FC = () => {
 
   if (!isClient) {
     return (
-      <p className="flex items-center text-4xl h-[100%] text-center justify-center">
-        Loading...
-      </p>
+      <div className="w-full h-full bg-gray-900 text-white shadow-lg">
+        <LoadingSpinner />
+      </div>
     );
   }
 

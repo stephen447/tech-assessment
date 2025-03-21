@@ -7,6 +7,7 @@ import RelayEnvironment from "../../relayEnvironment";
 import TokenGraph from "../../../components/TokenGraph";
 import { Suspense, useMemo } from "react";
 import { pageTokenQuery } from "./__generated__/pageTokenQuery.graphql";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 /**
  * GraphQL query to fetch token price data for the last month.
@@ -128,7 +129,9 @@ const TokenPage: React.FC = () => (
   <RelayEnvironmentProvider environment={RelayEnvironment}>
     <Suspense
       fallback={
-        <p className="text-center text-gray-400 mt-4">Loading token data...</p>
+        <div className="flex items-center justify-center h-full">
+          <LoadingSpinner />
+        </div>
       }
     >
       <TokenPageContent />
