@@ -59,7 +59,6 @@ describe("SearchResults Component", () => {
       </RelayEnvironmentProvider>
     );
 
-    expect(screen.getByText("Search Results")).toBeInTheDocument();
     expect(screen.getByText('Results for "Ethereum"')).toBeInTheDocument();
     expect(screen.getByTestId("token-item")).toHaveTextContent("Ethereum");
   });

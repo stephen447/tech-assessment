@@ -58,7 +58,6 @@ const SearchResults: React.FC = () => {
 
   return (
     <div className="w-full h-full bg-gray-900 text-white p-4">
-      <h2 className="text-3xl font-bold text-center">Search Results</h2>
       <p className="text-lg text-center text-gray-400">
         Results for "{tokenName}"
       </p>

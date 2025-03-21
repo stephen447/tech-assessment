@@ -4,6 +4,7 @@ import RelayEnvironment from "./relayEnvironment";
 import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
 import PopularTokenList from "../components/PopularTokenList";
+import Header from "../components/Header";
 
 /**
  * Main App component
@@ -25,7 +26,8 @@ const App: React.FC = () => {
   return (
     <RelayEnvironmentProvider environment={RelayEnvironment}>
       <div className="w-full h-[100%] text-white shadow-lg">
-        <p className="text-4xl font-bold text-center p-4">Crypto Hub</p>
+        {/* Header */}
+        <Header title="Crypto Hub" />
         {/* Search Bar */}
         <form onSubmit={handleSearch} className="p-4 flex justify-center">
           <input
