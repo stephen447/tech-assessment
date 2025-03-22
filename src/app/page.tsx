@@ -5,6 +5,7 @@ import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
 import PopularTokenList from "../components/PopularTokenList";
 import Header from "../components/Header";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 /**
  * Main App component
@@ -27,7 +28,7 @@ const App: React.FC = () => {
     <RelayEnvironmentProvider environment={RelayEnvironment}>
       <div className="w-full h-[100%] text-white shadow-lg">
         {/* Header */}
-        <Header title="Crypto Hub" />
+        <Header title="Crypto Sphere" />
         {/* Search Bar */}
         <form onSubmit={handleSearch} className="p-4 flex justify-center">
           <label htmlFor="search-input" className="sr-only">
@@ -52,9 +53,15 @@ const App: React.FC = () => {
         </form>
 
         {/* Crypto List */}
-        {/* <Suspense> */}
-        <PopularTokenList />
-        {/* </Suspense> */}
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center h-full">
+              <LoadingSpinner />
+            </div>
+          }
+        >
+          <PopularTokenList />
+        </Suspense>
       </div>
     </RelayEnvironmentProvider>
   );

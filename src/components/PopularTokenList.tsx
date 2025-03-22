@@ -46,12 +46,10 @@ const PopularTokenList: React.FC = () => {
 
   useEffect(() => {
     setIsClient(true);
-
     // Set up interval to refetch data every 1 minute (60000 ms)
     const intervalId = setInterval(() => {
       setFetchKey((prevKey) => prevKey + 1);
     }, 60000);
-
     // Clean up interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
@@ -60,7 +58,7 @@ const PopularTokenList: React.FC = () => {
   const data = useLazyLoadQuery(
     query,
     {},
-    { fetchKey, fetchPolicy: "network-only" }
+    { fetchKey, fetchPolicy: "store-or-network" }
   );
 
   if (!isClient) {
