@@ -15,7 +15,7 @@ jest.mock("../../components/PopularTokenList", () => ({
   default: () => <div>Popular Cryptos Mocked</div>, // Temporary mocked version
 }));
 
-describe("HomePage", () => {
+describe("Page", () => {
   let mockEnvironment: any;
   let mockPush: jest.Mock;
 
@@ -48,7 +48,7 @@ describe("HomePage", () => {
       render(<HomePage />);
 
       const input = screen.getByPlaceholderText(/Search cryptocurrency/i);
-      const button = screen.getByText(/Search/i);
+      const button = screen.getByRole("button", { name: /search/i });
 
       fireEvent.change(input, { target: { value: "Bitcoin" } });
       fireEvent.click(button);
