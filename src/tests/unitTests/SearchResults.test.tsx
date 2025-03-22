@@ -76,4 +76,19 @@ describe("SearchResults Component", () => {
 
     expect(screen.getByText("No results found")).toBeInTheDocument();
   });
+  test("no search parameters passed", () => {
+    // Mock useSearchParams to return empty value for search query
+    (useSearchParams as jest.Mock).mockReturnValue({
+      get: jest.fn(() => ""),
+    });
+
+    render(
+      <RelayEnvironmentProvider environment={RelayEnvironment}>
+        <SearchResults />
+      </RelayEnvironmentProvider>
+    );
+
+    // Check if "No results found" is displayed when there are no search parameters
+    expect(screen.getByText("No results found")).toBeInTheDocument();
+  });
 });

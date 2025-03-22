@@ -64,13 +64,11 @@ const SearchResults: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 m-4">
         {data?.EVM?.DEXTradeByTokens?.length ? (
-          data.EVM.DEXTradeByTokens.map((trade, index) =>
-            trade ? (
-              <div key={index}>
-                <TokenItem trade={trade} />
-              </div>
-            ) : null
-          )
+          data.EVM.DEXTradeByTokens.map((trade, index) => (
+            <div key={index}>
+              <TokenItem trade={trade} />
+            </div>
+          ))
         ) : (
           <div className="text-center text-gray-400" role="alert">
             No results found
