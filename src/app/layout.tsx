@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import "../styles/globals.css";
 
 export const metadata: Metadata = {
-  title: "Crypto Hub",
+  title: "Crypto Sphere",
   description: "An application to give cryto data",
+  icons: {
+    icon: "/favicon.svg", // Path relative to /public
+  },
 };
 
 export default function RootLayout({
@@ -13,6 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <link rel="icon" href="/favicon.svg" sizes="any" />
       <body className={`antialiased min-h-fit h-screen bg-gray-900`}>
         {children}
       </body>
