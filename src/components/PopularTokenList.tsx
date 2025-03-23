@@ -3,6 +3,7 @@ import { graphql, useLazyLoadQuery } from "react-relay";
 import { useState, useEffect } from "react";
 import TokenItem from "./TokenItem";
 import LoadingSpinner from "./LoadingSpinner";
+import DisplayError from "./DisplayError";
 
 // GraphQL query to fetch popular cryptocurrencies
 const query = graphql`
@@ -32,7 +33,6 @@ const query = graphql`
   }
 `;
 
-// Trade type
 type Trade = {
   Trade: {
     Currency: { Symbol: string; Name: string };
@@ -46,11 +46,10 @@ const PopularTokenList: React.FC = () => {
 
   useEffect(() => {
     setIsClient(true);
-    // Set up interval to refetch data every 1 minute (60000 ms)
     const intervalId = setInterval(() => {
       setFetchKey((prevKey) => prevKey + 1);
     }, 60000);
-    // Clean up interval on component unmount
+
     return () => clearInterval(intervalId);
   }, []);
 
@@ -61,18 +60,28 @@ const PopularTokenList: React.FC = () => {
     { fetchKey, fetchPolicy: "store-or-network" }
   );
 
+  // Display loading spinner while fetching
   if (!isClient) {
     return (
-      <div className="w-full h-full bg-gray-900 text-white shadow-lg">
+      <div className="w-full h-[77%] bg-gray-900 text-white shadow-lg">
         <LoadingSpinner />
       </div>
     );
   }
 
+  // Check if data exists and render the token list
+  if (!data?.EVM?.DEXTradeByTokens) {
+    return (
+      <div className="h-[77%]">
+        <DisplayError />
+      </div>
+    );
+  }
+
   return (
-    <div className="w-full h-full bg-gray-900 text-white shadow-lg">
+    <div className="w-full min-h-[77%] bg-gray-900 text-white shadow-lg">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 m-4">
-        {data?.EVM?.DEXTradeByTokens?.map((trade: Trade, index: number) => (
+        {data.EVM.DEXTradeByTokens.map((trade: Trade, index: number) => (
           <div key={index}>
             <TokenItem trade={trade} />
           </div>

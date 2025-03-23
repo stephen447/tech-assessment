@@ -9,7 +9,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ title }) => {
   return (
     <header
-      className="flex items-center justify-between p-4 bg-gray-900 text-white shadow-lg border-b-4 border-white"
+      className="flex items-center justify-between p-4 bg-gray-900 text-white shadow-lg border-b-4 border-white h-[10%]"
       role="banner"
     >
       {/* Logo with aria-label for better accessibility */}

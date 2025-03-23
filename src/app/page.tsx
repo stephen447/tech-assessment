@@ -30,42 +30,44 @@ const App: React.FC = () => {
       <div className="w-full min-h-[100%] text-white shadow-lg">
         {/* Header */}
         <Header title="Crypto Sphere" />
-        {/* Search Bar */}
-        <form onSubmit={handleSearch} className="p-4 flex justify-center">
-          <label htmlFor="search-input" className="sr-only">
-            Search for a cryptocurrency
-          </label>
-          <input
-            type="text"
-            placeholder="Search cryptocurrency..."
-            className="p-2 rounded-lg text-black w-80 focus:ring-4"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            aria-label="Enter a cryptocurrency name to search"
-          />
-          <button
-            type="submit"
-            role="button"
-            aria-label="Click to search for a cryptocurrency"
-            className="ml-2 bg-blue-500 px-4 py-2 rounded-lg text-white hover:bg-blue-600 transition focus:ring-4"
-          >
-            Search
-          </button>
-        </form>
+        <div className="min-h-[77vh]">
+          {/* Search Bar */}
+          <form onSubmit={handleSearch} className="p-4 flex justify-center">
+            <label htmlFor="search-input" className="sr-only">
+              Search for a cryptocurrency
+            </label>
+            <input
+              type="text"
+              placeholder="Search cryptocurrency..."
+              className="p-2 rounded-lg text-black w-80 focus:ring-4"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              aria-label="Enter a cryptocurrency name to search"
+            />
+            <button
+              type="submit"
+              role="button"
+              aria-label="Click to search for a cryptocurrency"
+              className="ml-2 bg-blue-500 px-4 py-2 rounded-lg text-white hover:bg-blue-600 transition focus:ring-4"
+            >
+              Search
+            </button>
+          </form>
 
-        {/* Crypto List */}
-        <Suspense
-          fallback={
-            <div className="flex items-center justify-center h-full">
-              <LoadingSpinner />
-            </div>
-          }
-        >
-          <PopularTokenList />
-        </Suspense>
+          {/* Crypto List */}
+          <Suspense
+            fallback={
+              <div className="flex items-center justify-center h-full">
+                <LoadingSpinner />
+              </div>
+            }
+          >
+            <PopularTokenList />
+          </Suspense>
+        </div>
+        {/* Footer */}
+        <Footer />
       </div>
-      {/* Footer */}
-      <Footer />
     </RelayEnvironmentProvider>
   );
 };

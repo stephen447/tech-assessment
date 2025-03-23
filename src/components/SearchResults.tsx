@@ -5,6 +5,7 @@ import TokenItem from "./TokenItem";
 import React, { useEffect, useState } from "react";
 import { SearchResultsQuery } from "./__generated__/SearchResultsQuery.graphql";
 import LoadingSpinner from "./LoadingSpinner";
+import DisplayError from "./DisplayError";
 
 const searchQuery = graphql`
   query SearchResultsQuery($tokenName: String!) {
@@ -36,6 +37,7 @@ const SearchResults: React.FC = () => {
   const searchParams = useSearchParams();
   const tokenName: string = searchParams.get("query") || "";
   const [isClient, setIsClient] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -47,6 +49,21 @@ const SearchResults: React.FC = () => {
     { tokenName: tokenName },
     { fetchPolicy: "store-or-network" }
   );
+  useEffect(() => {
+    if (data?.EVM?.DEXTradeByTokens) {
+      setError(false); // Reset error on success
+    } else {
+      setError(true); // Set error if no data
+    }
+  }, [data]);
+
+  if (error) {
+    return (
+      <div className="w-full h-full p-6 text-white">
+        <DisplayError />
+      </div>
+    );
+  }
 
   if (!isClient) {
     return (
@@ -57,7 +74,7 @@ const SearchResults: React.FC = () => {
   }
 
   return (
-    <div className="w-full min-h-full bg-gray-900 text-white p-4">
+    <div className="w-full min-h-[77%] bg-gray-900 text-white p-4">
       <p className="text-lg text-center text-gray-400">
         Results for "{tokenName}"
       </p>

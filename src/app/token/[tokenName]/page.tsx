@@ -5,11 +5,11 @@ import { graphql, useLazyLoadQuery } from "react-relay";
 import { RelayEnvironmentProvider } from "react-relay/hooks";
 import RelayEnvironment from "../../relayEnvironment";
 import TokenGraph from "../../../components/TokenGraph";
-import { Suspense, useMemo } from "react";
+import { Suspense, useMemo, useState, useEffect } from "react";
 import { pageTokenQuery } from "./__generated__/pageTokenQuery.graphql";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import Header from "../../../components/Header";
-import Footer from "@/components/Footer";
+import DisplayError from "../../../components/DisplayError";
 
 /**
  * GraphQL query to fetch token price data for the last month.
@@ -99,17 +99,36 @@ const TokenPageContent: React.FC = () => {
     [params.tokenName]
   );
 
-  // Fetch token price data
+  const [error, setError] = useState<boolean>(false);
+  const [tokenPriceData, setTokenPriceData] = useState<any>([]);
+
+  // Fetch token price data with lazy load query
   const data = useLazyLoadQuery<pageTokenQuery>(
     tokenPriceQuery,
     { tokenSymbol, since, till },
     { fetchPolicy: "store-or-network" }
   );
 
-  const tokenPriceData = useMemo(() => data?.EVM?.DEXTrades ?? [], [data]);
+  // Update state once data is available
+  useEffect(() => {
+    if (data?.EVM?.DEXTrades) {
+      setTokenPriceData(data.EVM.DEXTrades);
+      setError(false); // Reset error on success
+    } else {
+      setError(true); // Set error if no data
+    }
+  }, [data]);
+
+  if (error) {
+    return (
+      <div className="w-full h-full p-6 text-white">
+        <DisplayError />
+      </div>
+    );
+  }
 
   return (
-    <div className="w-full h-full p-6 text-white">
+    <div className="w-full min-h-[77%] p-6 text-white">
       <h1 className="text-4xl font-bold text-center">{tokenName}</h1>
       {tokenPriceData.length > 0 ? (
         <TokenGraph prices={tokenPriceData} />
@@ -123,7 +142,7 @@ const TokenPageContent: React.FC = () => {
 };
 
 /**
- * TokenPage Component: Wraps content in a Relay provider.
+ * TokenPage Component: Wraps content in a Relay provider and error handling.
  */
 const TokenPage: React.FC = () => (
   <RelayEnvironmentProvider environment={RelayEnvironment}>
