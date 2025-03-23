@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import PopularTokenList from "../components/PopularTokenList";
 import Header from "../components/Header";
 import LoadingSpinner from "../components/LoadingSpinner";
+import Footer from "../components/Footer";
 
 /**
  * Main App component
@@ -26,7 +27,7 @@ const App: React.FC = () => {
 
   return (
     <RelayEnvironmentProvider environment={RelayEnvironment}>
-      <div className="w-full h-[100%] text-white shadow-lg">
+      <div className="w-full min-h-[100%] text-white shadow-lg">
         {/* Header */}
         <Header title="Crypto Sphere" />
         {/* Search Bar */}
@@ -63,6 +64,8 @@ const App: React.FC = () => {
           <PopularTokenList />
         </Suspense>
       </div>
+      {/* Footer */}
+      <Footer />
     </RelayEnvironmentProvider>
   );
 };

@@ -9,6 +9,7 @@ import { Suspense, useMemo } from "react";
 import { pageTokenQuery } from "./__generated__/pageTokenQuery.graphql";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 import Header from "../../../components/Header";
+import Footer from "@/components/Footer";
 
 /**
  * GraphQL query to fetch token price data for the last month.

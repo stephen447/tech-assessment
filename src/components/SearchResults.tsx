@@ -57,7 +57,7 @@ const SearchResults: React.FC = () => {
   }
 
   return (
-    <div className="w-full h-full bg-gray-900 text-white p-4">
+    <div className="w-full min-h-full bg-gray-900 text-white p-4">
       <p className="text-lg text-center text-gray-400">
         Results for "{tokenName}"
       </p>

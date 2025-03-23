@@ -76,6 +76,7 @@ const TokenGraph: React.FC<TokenGraphProps> = ({ prices }) => {
               dataKey="price"
               stroke="#4CAF50"
               strokeWidth={2}
+              data-testid="token-graph-point-0"
             />
           </LineChart>
         </ResponsiveContainer>
