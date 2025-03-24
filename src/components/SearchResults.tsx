@@ -36,12 +36,12 @@ const searchQuery = graphql`
 
 const SearchResults: React.FC = () => {
   const searchParams = useSearchParams();
-  const tokenName: string = searchParams.get("query") || ""; // type the tokenName
+  const tokenName: string = searchParams.get("query") || "";
   const [isClient, setIsClient] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
-    setIsClient(true); // Only run on the client
+    setIsClient(true);
   }, []);
 
   // Use the generated type from Relay
@@ -51,6 +51,7 @@ const SearchResults: React.FC = () => {
     { fetchPolicy: "store-or-network" }
   );
 
+  // Use effect to implement some error handling
   useEffect(() => {
     if (data?.EVM?.DEXTradeByTokens) {
       setError(false); // Reset error on success

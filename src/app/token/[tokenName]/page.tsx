@@ -1,5 +1,4 @@
 "use client";
-
 import { useParams, useSearchParams } from "next/navigation";
 import { graphql, useLazyLoadQuery } from "react-relay";
 import { RelayEnvironmentProvider } from "react-relay/hooks";
@@ -55,6 +54,7 @@ const tokenPriceQuery = graphql`
 
 /**
  * Helper function to get the current date and previous month's date in ISO format.
+ * @returns An object with `since` and `till` keys containing the dates.
  */
 const getDateRange = () => {
   const currentTime = new Date();
@@ -71,6 +71,8 @@ const getDateRange = () => {
 
 /**
  * Helper function to format token names properly.
+ * @param tokenName - The token name to format.
+ * @returns The formatted token name.
  */
 const formatTokenName = (tokenName: string): string => {
   const decoded = decodeURIComponent(tokenName);
