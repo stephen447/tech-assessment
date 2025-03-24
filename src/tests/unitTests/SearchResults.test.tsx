@@ -5,6 +5,23 @@ import { useLazyLoadQuery } from "react-relay";
 import SearchResults from "../../components/SearchResults";
 import RelayEnvironment from "../../app/relayEnvironment";
 
+type Currency = {
+  Symbol: string;
+  Name: string | null | undefined;
+};
+
+type Trade = {
+  Currency: Currency | null | undefined;
+  current_price: number;
+};
+
+// Define the type for the `TokenItem` component props
+type TokenItemProps = {
+  trade?: {
+    Trade: Trade;
+  };
+};
+
 jest.mock("next/navigation", () => ({
   useSearchParams: jest.fn(),
 }));
@@ -14,9 +31,15 @@ jest.mock("react-relay", () => ({
   useLazyLoadQuery: jest.fn(),
 }));
 
-jest.mock("../../components/TokenItem", () => ({ trade }) => (
-  <div data-testid="token-item">{trade?.Trade?.Currency?.Name}</div>
-));
+jest.mock("../../components/TokenItem", () => {
+  const TokenItem = ({ trade }: TokenItemProps) => (
+    <div data-testid="token-item">
+      {trade?.Trade?.Currency?.Name || "No Data"}
+    </div>
+  );
+  TokenItem.displayName = "TokenItem";
+  return TokenItem;
+});
 
 describe("SearchResults Component", () => {
   beforeEach(() => {

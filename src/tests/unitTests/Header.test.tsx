@@ -1,7 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import Header from "../../components/Header";
-import Link from "next/link"; // Import the next/link component
-jest.mock("../../components/Logo", () => () => <svg data-testid="logo" />);
+
+jest.mock("../../components/Logo", () => {
+  const Logo = () => <div data-testid="logo">Logo</div>;
+  Logo.displayName = "Logo";
+  return Logo;
+});
 
 describe("Header Component", () => {
   test("renders the title correctly", () => {

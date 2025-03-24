@@ -16,7 +16,7 @@ jest.mock("../../components/PopularTokenList", () => ({
 }));
 
 describe("Home Page unit tests", () => {
-  let mockEnvironment: any;
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>;
   let mockPush: jest.Mock;
 
   beforeEach(() => {

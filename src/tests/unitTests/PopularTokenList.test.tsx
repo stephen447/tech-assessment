@@ -3,12 +3,32 @@ import { RelayEnvironmentProvider } from "react-relay";
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils";
 import PopularTokenList from "../../components/PopularTokenList"; // Adjust path as needed
 
+type Currency = {
+  Symbol: string;
+  Name: string;
+};
+
+type Trade = {
+  Currency: Currency;
+  current_price: number;
+};
+
+type DEXTradeByToken = {
+  Trade: Trade;
+};
+
+type EVM = {
+  DEXTradeByTokens: DEXTradeByToken[];
+};
+
 jest.mock("../../components/PopularTokenList", () => {
-  return ({ trade }: { trade?: any }) => (
+  const PopularTokenList = ({ trade }: { trade?: DEXTradeByToken }) => (
     <div data-testid="token-item">
       {trade?.Trade?.Currency?.Name || "No Data"}
     </div>
   );
+  PopularTokenList.displayName = "PopularTokenList";
+  return PopularTokenList;
 });
 
 describe("PopularTokenList", () => {
@@ -41,7 +61,7 @@ describe("PopularTokenList", () => {
 
     // Mock GraphQL response
     await act(async () => {
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      mockEnvironment.mock.resolveMostRecentOperation((operation: EVM) =>
         MockPayloadGenerator.generate(operation, {
           EVM: {
             DEXTradeByTokens: [
@@ -75,7 +95,7 @@ describe("PopularTokenList", () => {
 
     // Mock the first response
     await act(async () => {
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      mockEnvironment.mock.resolveMostRecentOperation((operation: EVM) =>
         MockPayloadGenerator.generate(operation, {
           EVM: {
             DEXTradeByTokens: [
@@ -100,7 +120,7 @@ describe("PopularTokenList", () => {
 
     // Mock the second response
     await act(async () => {
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      mockEnvironment.mock.resolveMostRecentOperation((operation: EVM) =>
         MockPayloadGenerator.generate(operation, {
           EVM: {
             DEXTradeByTokens: [

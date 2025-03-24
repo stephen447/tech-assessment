@@ -2,11 +2,12 @@
 import { useSearchParams } from "next/navigation";
 import { graphql, useLazyLoadQuery } from "react-relay";
 import TokenItem from "./TokenItem";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { SearchResultsQuery } from "./__generated__/SearchResultsQuery.graphql";
 import LoadingSpinner from "./LoadingSpinner";
 import DisplayError from "./DisplayError";
 
+// Define the GraphQL query
 const searchQuery = graphql`
   query SearchResultsQuery($tokenName: String!) {
     EVM(network: eth) {
@@ -35,20 +36,21 @@ const searchQuery = graphql`
 
 const SearchResults: React.FC = () => {
   const searchParams = useSearchParams();
-  const tokenName: string = searchParams.get("query") || "";
+  const tokenName: string = searchParams.get("query") || ""; // type the tokenName
   const [isClient, setIsClient] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
-    setIsClient(true);
+    setIsClient(true); // Only run on the client
   }, []);
 
   // Use the generated type from Relay
   const data = useLazyLoadQuery<SearchResultsQuery>(
     searchQuery,
-    { tokenName: tokenName },
+    { tokenName },
     { fetchPolicy: "store-or-network" }
   );
+
   useEffect(() => {
     if (data?.EVM?.DEXTradeByTokens) {
       setError(false); // Reset error on success
@@ -57,6 +59,7 @@ const SearchResults: React.FC = () => {
     }
   }, [data]);
 
+  // Error handling
   if (error) {
     return (
       <div className="w-full h-full p-6 text-white">
@@ -65,6 +68,7 @@ const SearchResults: React.FC = () => {
     );
   }
 
+  // Loading state
   if (!isClient) {
     return (
       <div className="w-full h-full bg-gray-900 text-white shadow-lg">
@@ -76,16 +80,18 @@ const SearchResults: React.FC = () => {
   return (
     <div className="w-full min-h-[77%] bg-gray-900 text-white p-4">
       <p className="text-lg text-center text-gray-400">
-        Results for "{tokenName}"
+        Results for {tokenName}
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 m-4">
         {data?.EVM?.DEXTradeByTokens?.length ? (
-          data.EVM.DEXTradeByTokens.map((trade, index) => (
-            <div key={index}>
-              <TokenItem trade={trade} />
-            </div>
-          ))
+          data.EVM.DEXTradeByTokens.map((trade, index) =>
+            trade && trade.Trade ? ( // Ensure trade and trade.Trade exist
+              <div key={index}>
+                <TokenItem trade={trade} />
+              </div>
+            ) : null
+          )
         ) : (
           <div className="text-center text-gray-400" role="alert">
             No results found
@@ -96,4 +102,10 @@ const SearchResults: React.FC = () => {
   );
 };
 
-export default SearchResults;
+const SearchResultsWithSuspense: React.FC = () => (
+  <Suspense fallback={<LoadingSpinner />}>
+    <SearchResults />
+  </Suspense>
+);
+
+export default SearchResultsWithSuspense;

@@ -90,7 +90,7 @@ const TokenPageContent: React.FC = () => {
 
   // Compute `tokenSymbol` dynamically
   const tokenSymbol = useMemo(() => {
-    let symbol = searchParams.get("token") ?? params.tokenName;
+    const symbol = searchParams.get("token") ?? params.tokenName;
     return symbol ? decodeURIComponent(symbol).toUpperCase() : "WETH";
   }, [searchParams, params.tokenName]);
 
@@ -100,6 +100,7 @@ const TokenPageContent: React.FC = () => {
   );
 
   const [error, setError] = useState<boolean>(false);
+  //eslint-disable-next-line
   const [tokenPriceData, setTokenPriceData] = useState<any>([]);
 
   // Fetch token price data with lazy load query

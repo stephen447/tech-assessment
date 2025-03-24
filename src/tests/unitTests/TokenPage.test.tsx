@@ -19,8 +19,7 @@ global.ResizeObserver = class {
 };
 
 describe("TokenPage Component", () => {
-  let mockEnvironment;
-
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>;
   beforeEach(() => {
     // Create a mock Relay environment before each test
     mockEnvironment = createMockEnvironment();

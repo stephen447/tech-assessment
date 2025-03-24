@@ -4,9 +4,13 @@ import RelayEnvironment from "../../app/relayEnvironment";
 import SearchPage from "../../app/search/page";
 
 // Mocking SearchResults component
-jest.mock("../../app/search/page", () => () => (
-  <div data-testid="search-results">SearchResults</div>
-));
+jest.mock("../../app/search/page", () => {
+  const MockSearchPage = () => (
+    <div data-testid="search-results">SearchResults</div>
+  );
+  MockSearchPage.displayName = "SearchPage"; // Set the display name here
+  return MockSearchPage;
+});
 
 describe("SearchPage Component", () => {
   test("renders the SearchResults component inside Relay provider", () => {

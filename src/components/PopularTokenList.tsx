@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import TokenItem from "./TokenItem";
 import LoadingSpinner from "./LoadingSpinner";
 import DisplayError from "./DisplayError";
+import { PopularTokenListQuery } from "./__generated__/PopularTokenListQuery.graphql";
 
 // GraphQL query to fetch popular cryptocurrencies
 const query = graphql`
@@ -33,13 +34,6 @@ const query = graphql`
   }
 `;
 
-type Trade = {
-  Trade: {
-    Currency: { Symbol: string; Name: string };
-    current_price: number;
-  };
-};
-
 const PopularTokenList: React.FC = () => {
   const [isClient, setIsClient] = useState<boolean>(false);
   const [fetchKey, setFetchKey] = useState<number>(0);
@@ -54,7 +48,7 @@ const PopularTokenList: React.FC = () => {
   }, []);
 
   // Fetching the data - forcing to get from network every time for most accurate data
-  const data = useLazyLoadQuery(
+  const data = useLazyLoadQuery<PopularTokenListQuery>(
     query,
     {},
     { fetchKey, fetchPolicy: "store-or-network" }
@@ -81,11 +75,15 @@ const PopularTokenList: React.FC = () => {
   return (
     <div className="w-full min-h-[77%] bg-gray-900 text-white shadow-lg">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 m-4">
-        {data.EVM.DEXTradeByTokens.map((trade: Trade, index: number) => (
-          <div key={index}>
-            <TokenItem trade={trade} />
-          </div>
-        ))}
+        {data?.EVM?.DEXTradeByTokens?.map((trade, index) => {
+          if (!trade || !trade.Trade) return null;
+
+          return (
+            <div key={index}>
+              <TokenItem trade={trade} />
+            </div>
+          );
+        })}
       </div>
     </div>
   );
