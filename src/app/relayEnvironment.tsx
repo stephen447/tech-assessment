@@ -7,7 +7,7 @@ import { Environment, Network, RecordSource, Store } from "relay-runtime";
  * @returns response of the query
  */
 /* eslint-disable-next-line */
-async function fetchGraphQL(params: any, variables: any) {
+export async function fetchGraphQL(params: any, variables: any) {
   const response = await fetch("https://streaming.bitquery.io/graphql", {
     method: "POST",
     headers: {
