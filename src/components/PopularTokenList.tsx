@@ -57,7 +57,7 @@ const PopularTokenList: React.FC = () => {
   // Display loading spinner while fetching
   if (!isClient) {
     return (
-      <div className="w-full h-[77%] bg-gray-900 text-white shadow-lg">
+      <div className="w-full h-[77%] bg-background_light dark:bg-background_dark shadow-lg">
         <LoadingSpinner />
       </div>
     );
@@ -73,7 +73,7 @@ const PopularTokenList: React.FC = () => {
   }
 
   return (
-    <div className="w-full min-h-[77%] bg-gray-900 text-white shadow-lg">
+    <div className="w-full min-h-[77%] bg-background_light dark:bg-background_dark shadow-lg">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 m-4">
         {data?.EVM?.DEXTradeByTokens?.map((trade, index) => {
           if (!trade || !trade.Trade) return null;

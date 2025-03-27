@@ -41,7 +41,7 @@ describe("TokenPage Component", () => {
     );
 
     // Check that the loading state message appears
-    expect(screen.getByText("Loading token data...")).toBeInTheDocument();
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("renders token price data when available", async () => {

@@ -63,7 +63,7 @@ const SearchResults: React.FC = () => {
   // Error handling
   if (error) {
     return (
-      <div className="w-full h-full p-6 text-white">
+      <div className="w-full h-full p-6 ">
         <DisplayError />
       </div>
     );
@@ -72,14 +72,14 @@ const SearchResults: React.FC = () => {
   // Loading state
   if (!isClient) {
     return (
-      <div className="w-full h-full bg-gray-900 text-white shadow-lg">
+      <div className="w-full h-full bg-background_light dark:bg-background_dark shadow-lg">
         <LoadingSpinner />
       </div>
     );
   }
 
   return (
-    <div className="w-full min-h-[77%] bg-gray-900 text-white p-4">
+    <div className="w-full min-h-[77%] bg-background_light dark:bg-background_dark p-4">
       <p className="text-lg text-center text-gray-400">
         Results for {tokenName}
       </p>
@@ -94,9 +94,9 @@ const SearchResults: React.FC = () => {
             ) : null
           )
         ) : (
-          <div className="text-center text-gray-400" role="alert">
+          <p className="text-center" role="alert">
             No results found
-          </div>
+          </p>
         )}
       </div>
     </div>

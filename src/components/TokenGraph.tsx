@@ -61,7 +61,7 @@ const TokenGraph: React.FC<TokenGraphProps> = ({ prices }) => {
                 const { date, price } = payload[0].payload;
                 return (
                   <div
-                    className="bg-gray-800 text-white p-2 rounded"
+                    className="bg-background_light dark:bg-background_dark border-2 border-border_light dark:border-border_dark p-2 rounded"
                     role="tooltip"
                     aria-live="polite"
                   >

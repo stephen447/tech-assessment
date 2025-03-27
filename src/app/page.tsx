@@ -27,7 +27,7 @@ const App: React.FC = () => {
 
   return (
     <RelayEnvironmentProvider environment={RelayEnvironment}>
-      <div className="w-full min-h-[100%] text-white shadow-lg">
+      <div className="w-full min-h-[100%] shadow-lg">
         {/* Header */}
         <Header title="Crypto Sphere" />
         <div className="min-h-[77vh]">

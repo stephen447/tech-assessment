@@ -124,14 +124,14 @@ const TokenPageContent: React.FC = () => {
 
   if (error) {
     return (
-      <div className="w-full h-full p-6 text-white">
+      <div className="w-full h-full p-6 ">
         <DisplayError />
       </div>
     );
   }
 
   return (
-    <div className="w-full min-h-[77%] p-6 text-white">
+    <div className="w-full min-h-[77%] p-6 ">
       <h1 className="text-4xl font-bold text-center">{tokenName}</h1>
       {tokenPriceData.length > 0 ? (
         <TokenGraph prices={tokenPriceData} />
