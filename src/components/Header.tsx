@@ -31,7 +31,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
   }, []);
 
   const toggleDarkMode = () => {
-    if (darkMode === null) return; // Avoid toggling before state is set
+    if (darkMode === null) return;
     const isDark = !darkMode;
     document.documentElement.classList.toggle("dark", isDark);
     setDarkMode(isDark); // Update dark mode state

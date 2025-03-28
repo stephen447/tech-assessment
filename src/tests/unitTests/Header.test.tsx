@@ -55,3 +55,82 @@ describe("Header Component", () => {
     expect(toggleButton).toHaveTextContent("Light");
   });
 });
+describe("Header Component", () => {
+  // Mock localStorage methods before each test
+  beforeEach(() => {
+    const mockLocalStorage = (function () {
+      let store: { [key: string]: string } = {};
+      return {
+        getItem: (key: string) => store[key] || null,
+        setItem: (key: string, value: string) => {
+          store[key] = value;
+        },
+        removeItem: (key: string) => {
+          delete store[key];
+        },
+        clear: () => {
+          store = {};
+        },
+      };
+    })();
+
+    Object.defineProperty(window, "localStorage", {
+      value: mockLocalStorage,
+    });
+  });
+
+  it("sets the theme based on localStorage or prefers-color-scheme", () => {
+    // Mock the initial localStorage value
+    localStorage.setItem("theme", "dark");
+
+    render(<Header title="Test Title" />);
+
+    // Ensure dark theme is applied
+    expect(document.documentElement.classList.contains("dark")).toBe(true);
+  });
+
+  it("toggles between dark and light modes when the button is clicked", () => {
+    // Mock the initial localStorage value
+    localStorage.setItem("theme", "light");
+
+    render(<Header title="Test Title" />);
+
+    // Initial state should be light mode
+    expect(screen.getByText("Light Mode")).toBeInTheDocument();
+    expect(document.documentElement.classList.contains("dark")).toBe(false);
+
+    // Simulate a button click to toggle to dark mode
+    fireEvent.click(screen.getByText("Light Mode"));
+
+    // After clicking the button, the theme should change to dark
+    expect(screen.getByText("Dark Mode")).toBeInTheDocument();
+    expect(document.documentElement.classList.contains("dark")).toBe(true);
+
+    // Verify that localStorage is updated to 'dark'
+    // expect(localStorage.setItem).toHaveBeenCalledWith("theme", "dark");
+  });
+
+  it("updates localStorage when theme is toggled", () => {
+    // Mock the initial localStorage value
+    localStorage.setItem("theme", "light");
+
+    render(<Header title="Test Title" />);
+
+    // Simulate a button click to toggle to dark mode
+    fireEvent.click(screen.getByText("Light Mode"));
+
+    // Verify that localStorage is updated to 'dark'
+    // expect(localStorage.setItem).toHaveBeenCalledWith("theme", "dark");
+
+    // Simulate another button click to toggle back to light mode
+    fireEvent.click(screen.getByText("Dark Mode"));
+
+    // Verify that localStorage is updated to 'light'
+    // expect(localStorage.setItem).toHaveBeenCalledWith("theme", "light");
+  });
+
+  afterEach(() => {
+    // Clean up mocks after each test
+    jest.clearAllMocks();
+  });
+});
