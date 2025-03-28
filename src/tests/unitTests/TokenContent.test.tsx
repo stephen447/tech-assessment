@@ -2,9 +2,6 @@ import { render, screen, waitFor } from "@testing-library/react";
 import TokenPageContent from "../../components/TokenPageContent";
 import { useLazyLoadQuery } from "react-relay";
 import { useParams, useSearchParams } from "next/navigation";
-import { TokenPageContentQuery } from "../../components/__generated__/TokenPageContentQuery.graphql";
-//import TokenGraph from "./TokenGraph";
-//import DisplayError from "./DisplayError";
 
 // Mock the necessary imports
 jest.mock("next/navigation", () => ({
