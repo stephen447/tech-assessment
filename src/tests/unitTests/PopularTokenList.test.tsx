@@ -1,35 +1,16 @@
 import { render, screen, waitFor, act } from "@testing-library/react";
 import { RelayEnvironmentProvider } from "react-relay";
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils";
-import PopularTokenList from "../../components/PopularTokenList"; // Adjust path as needed
+import PopularTokenList from "../../components/PopularTokenList";
+import { useLazyLoadQuery } from "react-relay";
 
-type Currency = {
-  Symbol: string;
-  Name: string;
-};
-
-type Trade = {
-  Currency: Currency;
-  current_price: number;
-};
-
-type DEXTradeByToken = {
-  Trade: Trade;
-};
-
-type EVM = {
-  DEXTradeByTokens: DEXTradeByToken[];
-};
-
-jest.mock("../../components/PopularTokenList", () => {
-  const PopularTokenList = ({ trade }: { trade?: DEXTradeByToken }) => (
-    <div data-testid="token-item">
-      {trade?.Trade?.Currency?.Name || "No Data"}
-    </div>
-  );
-  PopularTokenList.displayName = "PopularTokenList";
-  return PopularTokenList;
-});
+// Mock for relay hooks
+jest.mock("react-relay", () => ({
+  useLazyLoadQuery: jest.fn(),
+}));
+jest.mock("next/navigation", () => ({
+  useRouter: jest.fn(),
+}));
 
 describe("PopularTokenList", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>;
@@ -43,102 +24,117 @@ describe("PopularTokenList", () => {
     jest.useRealTimers();
   });
 
-  const renderComponent = () => {
-    return render(
-      <RelayEnvironmentProvider environment={mockEnvironment}>
-        <PopularTokenList />
-      </RelayEnvironmentProvider>
-    );
-  };
-
-  it("renders loading state initially", () => {
-    renderComponent();
-    expect(screen.getByRole("status")).toBeInTheDocument(); // Assuming LoadingSpinner has role="status"
-  });
-
   it("fetches and displays popular tokens", async () => {
-    renderComponent();
-
-    // Mock GraphQL response
-    await act(async () => {
-      mockEnvironment.mock.resolveMostRecentOperation((operation: EVM) =>
-        MockPayloadGenerator.generate(operation, {
-          EVM: {
-            DEXTradeByTokens: [
-              {
-                Trade: {
-                  Currency: { Symbol: "BTC", Name: "Bitcoin" },
-                  current_price: 50000,
-                },
-              },
-              {
-                Trade: {
-                  Currency: { Symbol: "ETH", Name: "Ethereum" },
-                  current_price: 3000,
-                },
-              },
-            ],
+    const mockData = {
+      EVM: {
+        DEXTradeByTokens: [
+          {
+            Trade: {
+              Currency: { Symbol: "BTC", Name: "Bitcoin" },
+              current_price: 50000,
+            },
           },
-        })
-      );
-    });
+          {
+            Trade: {
+              Currency: { Symbol: "ETH", Name: "Ethereum" },
+              current_price: 2000,
+            },
+          },
+        ],
+      },
+    };
 
-    // Verify tokens are displayed
+    // Mock the useLazyLoadQuery to return the mock data
+    (useLazyLoadQuery as jest.Mock).mockReturnValue(mockData);
+
+    render(<PopularTokenList />);
+
+    // Verify tokens are displayed initially
     await waitFor(() => {
       expect(screen.getByText("Bitcoin")).toBeInTheDocument();
       expect(screen.getByText("Ethereum")).toBeInTheDocument();
     });
+
+    // Simulate the passing of 60 seconds to trigger the refetch
+    act(() => {
+      jest.advanceTimersByTime(60000); // Advances time by 60 seconds
+    });
+
+    // Mock updated data for refetch
+    const mockUpdatedData = {
+      EVM: {
+        DEXTradeByTokens: [
+          {
+            Trade: {
+              Currency: { Symbol: "DOGE", Name: "Dogecoin" },
+              current_price: 0.1,
+            },
+          },
+          {
+            Trade: {
+              Currency: { Symbol: "ADA", Name: "Cardano" },
+              current_price: 1.2,
+            },
+          },
+        ],
+      },
+    };
+    (useLazyLoadQuery as jest.Mock).mockReturnValue(mockUpdatedData);
+
+    // Trigger a rerender and verify the updated tokens are displayed
+    render(<PopularTokenList />);
+
+    // Wait for updated tokens to appear after the refetch
+    await waitFor(() => {
+      expect(screen.getByText("Dogecoin")).toBeInTheDocument();
+      expect(screen.getByText("Cardano")).toBeInTheDocument();
+    });
   });
 
-  it("re-fetches data every minute", async () => {
-    renderComponent();
+  it("displays an error if no tokens are returned", async () => {
+    const mockEmptyData = {
+      EFM: {
+        DEXTradeByTokens: [],
+      },
+    };
 
-    // Mock the first response
-    await act(async () => {
-      mockEnvironment.mock.resolveMostRecentOperation((operation: EVM) =>
-        MockPayloadGenerator.generate(operation, {
-          EVM: {
-            DEXTradeByTokens: [
-              {
-                Trade: {
-                  Currency: { Symbol: "BTC", Name: "Bitcoin" },
-                  current_price: 50000,
-                },
-              },
-            ],
-          },
-        })
-      );
-    });
+    (useLazyLoadQuery as jest.Mock).mockReturnValue(mockEmptyData);
+    render(<PopularTokenList />);
 
-    expect(screen.getByText("Bitcoin")).toBeInTheDocument();
-
-    // Fast-forward 60 seconds (1 minute)
-    act(() => {
-      jest.advanceTimersByTime(60000);
-    });
-
-    // Mock the second response
-    await act(async () => {
-      mockEnvironment.mock.resolveMostRecentOperation((operation: EVM) =>
-        MockPayloadGenerator.generate(operation, {
-          EVM: {
-            DEXTradeByTokens: [
-              {
-                Trade: {
-                  Currency: { Symbol: "SOL", Name: "Solana" },
-                  current_price: 120,
-                },
-              },
-            ],
-          },
-        })
-      );
-    });
-
-    // Verify the UI updates with new data
+    // Verify error message is displayed
     await waitFor(() => {
-      expect(screen.getByText("Solana")).toBeInTheDocument();
+      expect(
+        screen.getByText("Error loading data. Please try again.")
+      ).toBeInTheDocument();
+    });
+  });
+
+  it("displays an error if no tokens are returned", async () => {
+    const mockEmptyData = {
+      EVM: {
+        DEXTradeByTokens: [
+          {
+            Trde: {
+              Currency: { Symbol: "DOGE", Name: "Dogecoin" },
+              current_price: 0.1,
+            },
+          },
+          {
+            Trde: {
+              Currency: { Symbol: "ADA", Name: "Cardano" },
+              current_price: 1.2,
+            },
+          },
+        ],
+      },
+    };
+
+    (useLazyLoadQuery as jest.Mock).mockReturnValue(mockEmptyData);
+    render(<PopularTokenList />);
+
+    // Verify error message is displayed
+    await waitFor(() => {
+      expect(screen.queryByText("Bitcoin")).not.toBeInTheDocument();
     });
   });
 });

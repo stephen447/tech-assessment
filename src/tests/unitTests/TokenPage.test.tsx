@@ -6,13 +6,15 @@ jest.mock("react-relay/hooks", () => ({
   RelayEnvironmentProvider: ({ children }) => <div>{children}</div>,
 }));
 
-jest.mock("../../components/LoadingSpinner", () => () => {
+// Mock for LoadingSpinner with displayName
+jest.mock("../../components/LoadingSpinner", () => {
   const LoadingSpinner = () => <div>Loading...</div>;
   LoadingSpinner.displayName = "LoadingSpinner";
   return LoadingSpinner;
 });
 
-jest.mock("../../components/TokenPageContent", () => () => {
+// Mock for TokenPageContent with displayName
+jest.mock("../../components/TokenPageContent", () => {
   const TokenPageContent = () => <div>Token Content</div>;
   TokenPageContent.displayName = "TokenPageContent";
   return TokenPageContent;
@@ -21,7 +23,8 @@ jest.mock("../../components/TokenPageContent", () => () => {
 describe("TokenPage", () => {
   it("should show the loading spinner while loading the content", async () => {
     render(<TokenPage />);
-    // Wait for the component to finish loading
+
+    // Wait for the content to load and ensure TokenPageContent is displayed
     await waitFor(() => screen.getByText("Token Content"));
 
     // Ensure that the token content is rendered after loading
@@ -31,8 +34,10 @@ describe("TokenPage", () => {
   it("should render TokenPageContent after loading", async () => {
     render(<TokenPage />);
 
-    // After Suspense resolves, check that TokenPageContent is rendered
+    // Wait for the content to load and ensure TokenPageContent is displayed
     await waitFor(() => screen.getByText("Token Content"));
+
+    // Check if TokenPageContent has been rendered
     expect(screen.getByText("Token Content")).toBeInTheDocument();
   });
 });
