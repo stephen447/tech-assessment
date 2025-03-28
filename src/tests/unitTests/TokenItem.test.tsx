@@ -38,6 +38,24 @@ describe("TokenItem Component", () => {
     expect(pushMock).toHaveBeenCalledWith("/token/bitcoin?token=btc");
   });
 
+  it("navigates to the correct URL when clicked", () => {
+    const pushMock = jest.fn();
+    (useRouter as jest.Mock).mockReturnValue({ push: pushMock });
+    const mockTrade = {
+      Trade: {
+        Currency: {},
+        current_price: 45000.25,
+      },
+    };
+
+    render(<TokenItem trade={mockTrade} />);
+
+    const button = screen.getByRole("button");
+    fireEvent.click(button);
+
+    expect(pushMock).toHaveBeenCalledWith("/");
+  });
+
   it("displays 'N/A' if the current price is null", () => {
     const mockTradeNoPrice = {
       ...mockTrade,

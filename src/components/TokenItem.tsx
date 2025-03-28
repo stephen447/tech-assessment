@@ -24,8 +24,13 @@ const TokenItem: React.FC<TokenItemProps> = ({ trade }) => {
    * Redirects to the token page when the token item is clicked
    */
   const handleClick = () => {
-    const name = trade.Trade?.Currency?.Name?.toLowerCase() || "unknown";
-    const symbol = trade.Trade?.Currency?.Symbol?.toLowerCase() || "unknown";
+    const name = trade.Trade?.Currency?.Name?.toLowerCase() || null;
+    const symbol = trade.Trade?.Currency?.Symbol?.toLowerCase() || null;
+
+    if (!name || !symbol) {
+      router.push(`/`);
+      return;
+    }
 
     router.push(`/token/${name}?token=${symbol}`);
   };
