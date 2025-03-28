@@ -114,4 +114,56 @@ describe("SearchResults Component", () => {
     // Check if "No results found" is displayed when there are no search parameters
     expect(screen.getByText("No results found")).toBeInTheDocument();
   });
+
+  test("Error message displays correctly when data not passed correctly", () => {
+    (useLazyLoadQuery as jest.Mock).mockReturnValue({
+      EVM: {
+        DEXTraByTokens: [
+          {
+            Trade: {
+              Currency: { Name: "Ethereum", Symbol: "ETH" },
+              current_price: 3500,
+            },
+            volume_usd: 1000000,
+            trade_count: 500,
+          },
+        ],
+      },
+    });
+
+    render(
+      <RelayEnvironmentProvider environment={RelayEnvironment}>
+        <SearchResults />
+      </RelayEnvironmentProvider>
+    );
+
+    expect(
+      screen.getByText("Error loading data. Please try again.")
+    ).toBeInTheDocument();
+  });
+
+  test("Nothing displayed when there is an error with the data", () => {
+    (useLazyLoadQuery as jest.Mock).mockReturnValue({
+      EVM: {
+        DEXTradeByTokens: [
+          {
+            Tre: {
+              Currency: { Name: "Ethereum", Symbol: "ETH" },
+              current_price: 3500,
+            },
+            volume_usd: 1000000,
+            trade_count: 500,
+          },
+        ],
+      },
+    });
+
+    render(
+      <RelayEnvironmentProvider environment={RelayEnvironment}>
+        <SearchResults />
+      </RelayEnvironmentProvider>
+    );
+
+    expect(screen.queryByText("Ethereum")).not.toBeInTheDocument();
+  });
 });
