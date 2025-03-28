@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import TokenPageContent from "../../components/TokenPageContent";
 import { useLazyLoadQuery } from "react-relay";
 import { useParams, useSearchParams } from "next/navigation";
@@ -24,14 +24,6 @@ jest.mock("../../components/DisplayError", () => ({
 }));
 
 describe("TokenPageContent", () => {
-  const mockSearchParams = {
-    get: jest.fn(),
-  };
-
-  const mockParams = {
-    tokenName: "test-token",
-  };
-
   beforeEach(() => {
     // Reset all mocks before each test
     jest.clearAllMocks();

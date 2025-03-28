@@ -6,10 +6,17 @@ jest.mock("react-relay/hooks", () => ({
   RelayEnvironmentProvider: ({ children }) => <div>{children}</div>,
 }));
 
-jest.mock("../../components/LoadingSpinner", () => () => <div>Loading...</div>);
-jest.mock("../../components/TokenPageContent", () => () => (
-  <div>Token Content</div>
-));
+jest.mock("../../components/LoadingSpinner", () => () => {
+  const LoadingSpinner = () => <div>Loading...</div>;
+  LoadingSpinner.displayName = "LoadingSpinner";
+  return LoadingSpinner;
+});
+
+jest.mock("../../components/TokenPageContent", () => () => {
+  const TokenPageContent = () => <div>Token Content</div>;
+  TokenPageContent.displayName = "TokenPageContent";
+  return TokenPageContent;
+});
 
 describe("TokenPage", () => {
   it("should show the loading spinner while loading the content", async () => {
