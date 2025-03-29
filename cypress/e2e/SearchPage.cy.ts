@@ -1,5 +1,5 @@
-describe("Crypto App homepage", () => {
-  describe("Crypto App Home Page", () => {
+describe("Crypto App Search Page", () => {
+  describe("Crypto App Search Page", () => {
     beforeEach(() => {
       cy.visit("/search?query=Wrapped%20Ether");
       cy.clearLocalStorage();
@@ -22,7 +22,6 @@ describe("Crypto App homepage", () => {
   describe("Header", () => {
     beforeEach(() => {
       cy.clearLocalStorage();
-
       cy.visit("/search?query=Wrapped%20Ether");
     });
 
