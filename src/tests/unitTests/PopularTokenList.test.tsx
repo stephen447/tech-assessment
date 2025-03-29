@@ -1,6 +1,5 @@
 import { render, screen, waitFor, act } from "@testing-library/react";
-import { RelayEnvironmentProvider } from "react-relay";
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils";
+import { createMockEnvironment } from "relay-test-utils";
 import PopularTokenList from "../../components/PopularTokenList";
 import { useLazyLoadQuery } from "react-relay";
 
