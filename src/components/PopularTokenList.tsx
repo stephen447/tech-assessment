@@ -8,11 +8,11 @@ import { PopularTokenListQuery } from "./__generated__/PopularTokenListQuery.gra
 
 // GraphQL query to fetch popular cryptocurrencies
 const query = graphql`
-  query PopularTokenListQuery {
+  query PopularTokenListQuery($since: DateTime!) {
     EVM(network: eth) {
       DEXTradeByTokens(
         where: {
-          Block: { Time: { since: "2025-03-16T00:00:00Z" } }
+          Block: { Time: { since: $since } }
           Trade: { AmountInUSD: { gt: "1000" } }
         }
         orderBy: { descendingByField: "trade_count" }
@@ -38,6 +38,10 @@ const PopularTokenList: React.FC = () => {
   const [isClient, setIsClient] = useState<boolean>(false);
   const [fetchKey, setFetchKey] = useState<number>(0);
 
+  const todayMidnightUTC = new Date();
+  todayMidnightUTC.setUTCHours(0, 0, 0, 0);
+  const todayISO = todayMidnightUTC.toISOString();
+
   useEffect(() => {
     setIsClient(true);
     const intervalId = setInterval(() => {
@@ -50,7 +54,7 @@ const PopularTokenList: React.FC = () => {
   // Fetching the data - forcing to get from network every time for most accurate data
   const data = useLazyLoadQuery<PopularTokenListQuery>(
     query,
-    {},
+    { since: todayISO }, // Pass today's midnight UTC
     { fetchKey, fetchPolicy: "store-or-network" }
   );
 

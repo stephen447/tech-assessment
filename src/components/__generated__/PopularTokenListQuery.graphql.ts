@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5b4c1ec0c5d44f29d642c7963b4ba00b>>
+ * @generated SignedSource<<c16c2515d70d20a7b6a8fbc8e066af6a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,7 +9,9 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from 'relay-runtime';
-export type PopularTokenListQuery$variables = Record<PropertyKey, never>;
+export type PopularTokenListQuery$variables = {
+  since: any;
+};
 export type PopularTokenListQuery$data = {
   readonly EVM: {
     readonly DEXTradeByTokens: ReadonlyArray<{
@@ -34,6 +36,13 @@ export type PopularTokenListQuery = {
 
 const node: ConcreteRequest = (function(){
 var v0 = [
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "since"
+  }
+],
+v1 = [
   {
     "alias": null,
     "args": [
@@ -66,20 +75,36 @@ var v0 = [
             }
           },
           {
-            "kind": "Literal",
-            "name": "where",
-            "value": {
-              "Block": {
-                "Time": {
-                  "since": "2025-03-16T00:00:00Z"
-                }
+            "fields": [
+              {
+                "fields": [
+                  {
+                    "fields": [
+                      {
+                        "kind": "Variable",
+                        "name": "since",
+                        "variableName": "since"
+                      }
+                    ],
+                    "kind": "ObjectValue",
+                    "name": "Time"
+                  }
+                ],
+                "kind": "ObjectValue",
+                "name": "Block"
               },
-              "Trade": {
-                "AmountInUSD": {
-                  "gt": "1000"
+              {
+                "kind": "Literal",
+                "name": "Trade",
+                "value": {
+                  "AmountInUSD": {
+                    "gt": "1000"
+                  }
                 }
               }
-            }
+            ],
+            "kind": "ObjectValue",
+            "name": "where"
           }
         ],
         "concreteType": "DEXTradeByTokensResult",
@@ -177,7 +202,7 @@ var v0 = [
             "storageKey": null
           }
         ],
-        "storageKey": "DEXTradeByTokens(limit:{\"count\":20},orderBy:{\"descendingByField\":\"trade_count\"},where:{\"Block\":{\"Time\":{\"since\":\"2025-03-16T00:00:00Z\"}},\"Trade\":{\"AmountInUSD\":{\"gt\":\"1000\"}}})"
+        "storageKey": null
       }
     ],
     "storageKey": "EVM(network:\"eth\")"
@@ -185,32 +210,32 @@ var v0 = [
 ];
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "PopularTokenListQuery",
-    "selections": (v0/*: any*/),
+    "selections": (v1/*: any*/),
     "type": "Query",
     "abstractKey": null
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "PopularTokenListQuery",
-    "selections": (v0/*: any*/)
+    "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "0bebb40b819fa8892d920b2a7bb22e69",
+    "cacheID": "21a2d53e367011d25b5583631c2264be",
     "id": null,
     "metadata": {},
     "name": "PopularTokenListQuery",
     "operationKind": "query",
-    "text": "query PopularTokenListQuery {\n  EVM(network: eth) {\n    DEXTradeByTokens(where: {Block: {Time: {since: \"2025-03-16T00:00:00Z\"}}, Trade: {AmountInUSD: {gt: \"1000\"}}}, orderBy: {descendingByField: \"trade_count\"}, limit: {count: 20}) {\n      Trade {\n        Currency {\n          Symbol\n          Name\n          SmartContract\n        }\n        current_price: PriceInUSD(maximum: Block_Time)\n      }\n      volume_usd: sum(of: Trade_AmountInUSD)\n      unique_traders: uniq(of: Trade_Buyer)\n      trade_count: count\n    }\n  }\n}\n"
+    "text": "query PopularTokenListQuery(\n  $since: DateTime!\n) {\n  EVM(network: eth) {\n    DEXTradeByTokens(where: {Block: {Time: {since: $since}}, Trade: {AmountInUSD: {gt: \"1000\"}}}, orderBy: {descendingByField: \"trade_count\"}, limit: {count: 20}) {\n      Trade {\n        Currency {\n          Symbol\n          Name\n          SmartContract\n        }\n        current_price: PriceInUSD(maximum: Block_Time)\n      }\n      volume_usd: sum(of: Trade_AmountInUSD)\n      unique_traders: uniq(of: Trade_Buyer)\n      trade_count: count\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "72de9d5737dabb3d79b4cb091124297e";
+(node as any).hash = "5d5ced2f7f138bca9011db701f9bb6a0";
 
 export default node;
