@@ -98,7 +98,10 @@ const SearchResults: React.FC = () => {
             ) : null
           )
         ) : (
-          <p className="text-center" role="alert">
+          <p
+            className="text-center text-3xl text-gray-500 p-4 rounded-lg ml-auto mr-auto col-span-1 md:col-span-2 lg:col-span-3"
+            role="alert"
+          >
             No results found
           </p>
         )}
