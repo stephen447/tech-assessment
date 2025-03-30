@@ -9,12 +9,12 @@ import DisplayError from "./DisplayError";
 
 // Define the GraphQL query
 const searchQuery = graphql`
-  query SearchResultsQuery($tokenName: String!) {
+  query SearchResultsQuery($tokenName: String!, $since: DateTime!) {
     EVM(network: eth) {
       DEXTradeByTokens(
         where: {
           Trade: { Currency: { Name: { includesCaseInsensitive: $tokenName } } }
-          Block: { Time: { since: "2025-03-01T00:00:00Z" } }
+          Block: { Time: { since: $since } }
         }
         limit: { count: 20 }
         orderBy: { descendingByField: "Trade_current_price_maximum" }
@@ -40,6 +40,10 @@ const SearchResults: React.FC = () => {
   const [isClient, setIsClient] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
 
+  const todayMidnightUTC = new Date();
+  todayMidnightUTC.setUTCHours(0, 0, 0, 0);
+  const todayISO = todayMidnightUTC.toISOString();
+
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -47,7 +51,7 @@ const SearchResults: React.FC = () => {
   // Use the generated type from Relay
   const data = useLazyLoadQuery<SearchResultsQuery>(
     searchQuery,
-    { tokenName },
+    { tokenName, since: todayISO }, // Pass today's date
     { fetchPolicy: "store-or-network" }
   );
 

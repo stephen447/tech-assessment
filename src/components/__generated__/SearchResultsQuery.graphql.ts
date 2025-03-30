@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<2d82667aa312dd7d357a3e3bdc0e953e>>
+ * @generated SignedSource<<c944963bb62e49952040e802b87d590c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,6 +10,7 @@
 
 import { ConcreteRequest } from 'relay-runtime';
 export type SearchResultsQuery$variables = {
+  since: any;
   tokenName: string;
 };
 export type SearchResultsQuery$data = {
@@ -34,14 +35,17 @@ export type SearchResultsQuery = {
 };
 
 const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "tokenName"
-  }
-],
-v1 = [
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "since"
+},
+v1 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "tokenName"
+},
+v2 = [
   {
     "alias": null,
     "args": [
@@ -76,13 +80,21 @@ v1 = [
           {
             "fields": [
               {
-                "kind": "Literal",
-                "name": "Block",
-                "value": {
-                  "Time": {
-                    "since": "2025-03-01T00:00:00Z"
+                "fields": [
+                  {
+                    "fields": [
+                      {
+                        "kind": "Variable",
+                        "name": "since",
+                        "variableName": "since"
+                      }
+                    ],
+                    "kind": "ObjectValue",
+                    "name": "Time"
                   }
-                }
+                ],
+                "kind": "ObjectValue",
+                "name": "Block"
               },
               {
                 "fields": [
@@ -202,32 +214,38 @@ v1 = [
 ];
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/)
+    ],
     "kind": "Fragment",
     "metadata": null,
     "name": "SearchResultsQuery",
-    "selections": (v1/*: any*/),
+    "selections": (v2/*: any*/),
     "type": "Query",
     "abstractKey": null
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v1/*: any*/),
+      (v0/*: any*/)
+    ],
     "kind": "Operation",
     "name": "SearchResultsQuery",
-    "selections": (v1/*: any*/)
+    "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "69288fa6338dd68ebbcd259aaa7c2d25",
+    "cacheID": "1bea3771c6ccab45313a6a510e8991f8",
     "id": null,
     "metadata": {},
     "name": "SearchResultsQuery",
     "operationKind": "query",
-    "text": "query SearchResultsQuery(\n  $tokenName: String!\n) {\n  EVM(network: eth) {\n    DEXTradeByTokens(where: {Trade: {Currency: {Name: {includesCaseInsensitive: $tokenName}}}, Block: {Time: {since: \"2025-03-01T00:00:00Z\"}}}, limit: {count: 20}, orderBy: {descendingByField: \"Trade_current_price_maximum\"}) {\n      Trade {\n        Currency {\n          Name\n          Symbol\n          SmartContract\n        }\n        current_price: PriceInUSD(maximum: Block_Time)\n      }\n      volume_usd: sum(of: Trade_Side_AmountInUSD)\n      trade_count: count\n    }\n  }\n}\n"
+    "text": "query SearchResultsQuery(\n  $tokenName: String!\n  $since: DateTime!\n) {\n  EVM(network: eth) {\n    DEXTradeByTokens(where: {Trade: {Currency: {Name: {includesCaseInsensitive: $tokenName}}}, Block: {Time: {since: $since}}}, limit: {count: 20}, orderBy: {descendingByField: \"Trade_current_price_maximum\"}) {\n      Trade {\n        Currency {\n          Name\n          Symbol\n          SmartContract\n        }\n        current_price: PriceInUSD(maximum: Block_Time)\n      }\n      volume_usd: sum(of: Trade_Side_AmountInUSD)\n      trade_count: count\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "929f86bc3ba1ab7b881c4e0d1047c9df";
+(node as any).hash = "3853059159316cf49a5a83ff62748bbc";
 
 export default node;
