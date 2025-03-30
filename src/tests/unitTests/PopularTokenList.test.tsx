@@ -1,5 +1,4 @@
 import { render, screen, waitFor, act } from "@testing-library/react";
-import { createMockEnvironment } from "relay-test-utils";
 import PopularTokenList from "../../components/PopularTokenList";
 import { useLazyLoadQuery } from "react-relay";
 
@@ -12,10 +11,7 @@ jest.mock("next/navigation", () => ({
 }));
 
 describe("PopularTokenList", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>;
-
   beforeEach(() => {
-    mockEnvironment = createMockEnvironment();
     jest.useFakeTimers();
   });
 
