@@ -128,6 +128,13 @@ describe("Header Component", () => {
     // Verify that localStorage is updated to 'light'
     // expect(localStorage.setItem).toHaveBeenCalledWith("theme", "light");
   });
+  it("tests link to favourites page", () => {
+    render(<Header title="Test Title" />);
+
+    const link = screen.getByTestId("favorites-link");
+    console.log(link);
+    expect(link).toHaveAttribute("href", "/favourites");
+  });
 
   afterEach(() => {
     // Clean up mocks after each test
