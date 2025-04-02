@@ -1,3 +1,4 @@
+"use client";
 import { makeAutoObservable } from "mobx";
 
 interface Token {
@@ -7,33 +8,29 @@ interface Token {
 }
 
 class FavoritesStore {
-  favorites: Token[] = [
-    {
-      id: "1",
-      name: "Bitcoin",
-      symbol: "BTC",
-    },
-    {
-      id: "2",
-      name: "Ethereum",
-      symbol: "ETH",
-    },
-  ];
+  favorites: Token[] = [];
 
   constructor() {
     makeAutoObservable(this);
-    console.log("Favorites store initialized", this.favorites);
+    // this.favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+    this.favorites = [];
   }
 
-  addFavorite(token: Token) {
-    if (!this.favorites.find((t) => t.id === token.id)) {
-      this.favorites.push(token);
+  addFavorite(token: { name: string; symbol: string }) {
+    if (!this.favorites.find((t) => t.name === token.name)) {
+      //  Get highest id and increment by 1
+      const id = Math.max(...this.favorites.map((t) => parseInt(t.id))) + 1;
+      this.favorites.push({ id: id.toString(), ...token });
     }
+    // Update the local storage
+    // localStorage.setItem("favorites", JSON.stringify(this.favorites));
   }
 
-  removeFavorite(id: string) {
-    console.log("Removing favorite with id: ", id);
-    this.favorites = this.favorites.filter((token) => token.id !== id);
+  removeFavorite(name: string) {
+    console.log("Removing favorite with id: ", name);
+    this.favorites = this.favorites.filter((token) => token.name !== name);
+    // Update the local storage
+    // localStorage.setItem("favorites", JSON.stringify(this.favorites));
   }
 
   checkIfFavorite(name: string) {

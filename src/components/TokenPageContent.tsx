@@ -5,6 +5,7 @@ import TokenGraph from "./TokenGraph";
 import { useMemo, useState, useEffect } from "react";
 import { TokenPageContentQuery } from "./__generated__/TokenPageContentQuery.graphql";
 import DisplayError from "./DisplayError";
+import { favoritesStore } from "../FavoritesStore";
 
 /**
  * Helper function to get the current date and previous month's date in ISO format.
@@ -35,6 +36,7 @@ const formatTokenName = (tokenName: string): string => {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 };
+
 /**
  * GraphQL query to fetch token price data for the last month.
  */
@@ -100,25 +102,42 @@ const TokenPageContent: React.FC = () => {
   //eslint-disable-next-line
   const [tokenPriceData, setTokenPriceData] = useState<any>([]);
 
+  // State for favorite
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
+
   // Fetch token price data with lazy load query
   const data = useLazyLoadQuery<TokenPageContentQuery>(
     tokenPriceQuery,
     { tokenSymbol, since, till },
     { fetchPolicy: "store-or-network" }
   );
-  console.log("data", data);
 
-  // Update state once data is available
   useEffect(() => {
     if (data?.EVM?.DEXTrades) {
-      console.log("success");
       setTokenPriceData(data.EVM.DEXTrades);
       setError(false); // Reset error on success
     } else {
-      console.log("error");
       setError(true); // Set error if no data
     }
   }, [data]);
+
+  // Add/remove favorite from localStorage
+  const handleFavoriteClick = () => {
+    if (isFavorite) {
+      // Remove from favorites
+      favoritesStore.removeFavorite(tokenName);
+    } else {
+      // Add to favorites
+      favoritesStore.addFavorite({ name: tokenName, symbol: tokenSymbol });
+    }
+
+    setIsFavorite(!isFavorite);
+  };
+
+  // Check if the token is already in favorites on component mount
+  useEffect(() => {
+    setIsFavorite(favoritesStore.checkIfFavorite(tokenName));
+  }, [tokenSymbol, tokenName]);
 
   if (error) {
     return (
@@ -130,7 +149,17 @@ const TokenPageContent: React.FC = () => {
 
   return (
     <div className="w-full min-h-[77%] p-6 ">
-      <h1 className="text-4xl font-bold text-center">{tokenName}</h1>
+      <div className="flex items-center justify-center gap-2">
+        <h1 className="text-4xl font-bold">{tokenName}</h1>
+        <span
+          onClick={handleFavoriteClick}
+          style={{ cursor: "pointer" }}
+          aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+        >
+          {isFavorite ? "❤️" : "🤍"}
+        </span>
+      </div>
+
       {tokenPriceData.length > 0 ? (
         <TokenGraph prices={tokenPriceData} />
       ) : (

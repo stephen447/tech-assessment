@@ -1,5 +1,4 @@
 "use client";
-import { useRouter } from "next/navigation";
 import React from "react";
 
 // Types
@@ -15,8 +14,6 @@ interface FavouriteItemProps {
 }
 
 const FavouriteItem: React.FC<FavouriteItemProps> = ({ token, onRemove }) => {
-  const router = useRouter();
-
   /**
    * Redirects to the token page when the token item is clicked
    */

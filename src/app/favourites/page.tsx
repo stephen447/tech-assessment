@@ -25,7 +25,7 @@ const FavoritesPage: React.FC = observer(() => {
           <div key={token.id} className="flex justify-between items-center m-2">
             <FavouriteItem
               token={token}
-              onRemove={() => favoritesStore.removeFavorite(token.id)}
+              onRemove={() => favoritesStore.removeFavorite(token.name)}
             />
           </div>
         ))}
