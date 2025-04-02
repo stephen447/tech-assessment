@@ -1,13 +1,5 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
-//import ThemeInitializer from "./ThemeInitialiser";
-// layout.tsx or any server component
-// import dynamic from "next/dynamic";
-
-// Dynamically import your client component
-// const ThemeInitializer = dynamic(() => import("./ThemeInitialiser"), {
-//   ssr: false, // ⛔ disables server-side rendering for this component
-// });
 
 export const metadata: Metadata = {
   title: "Crypto Sphere",

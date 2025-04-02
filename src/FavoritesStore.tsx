@@ -12,7 +12,10 @@ class FavoritesStore {
 
   constructor() {
     makeAutoObservable(this);
-    // this.favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+    //this.favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+    if (typeof window !== "undefined") {
+      this.favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+    }
     this.favorites = [];
   }
 
@@ -23,14 +26,14 @@ class FavoritesStore {
       this.favorites.push({ id: id.toString(), ...token });
     }
     // Update the local storage
-    // localStorage.setItem("favorites", JSON.stringify(this.favorites));
+    localStorage.setItem("favorites", JSON.stringify(this.favorites));
   }
 
   removeFavorite(name: string) {
     console.log("Removing favorite with id: ", name);
     this.favorites = this.favorites.filter((token) => token.name !== name);
     // Update the local storage
-    // localStorage.setItem("favorites", JSON.stringify(this.favorites));
+    localStorage.setItem("favorites", JSON.stringify(this.favorites));
   }
 
   checkIfFavorite(name: string) {

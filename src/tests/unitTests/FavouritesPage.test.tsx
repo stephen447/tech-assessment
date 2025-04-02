@@ -34,13 +34,6 @@ jest.mock("../../FavoritesStore", () => ({
 }));
 
 describe("FavoritesPage", () => {
-  //   let mockPush: jest.Mock;
-
-  //   beforeEach(() => {
-  //     mockPush = jest.fn();
-  //     (useRouter as jest.Mock).mockReturnValue({ push: mockPush });
-  //   });
-
   // Test 1: Render "No favorites added yet" when the favorites list is empty
   it("renders 'No favorites added yet' when the favorites list is empty", () => {
     favoritesStore.favorites = []; // Ensure favorites is empty

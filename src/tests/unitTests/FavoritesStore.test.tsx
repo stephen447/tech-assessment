@@ -1,5 +1,4 @@
-import { favoritesStore } from "../../FavoritesStore"; // Import the store
-
+import { favoritesStore } from "../../FavoritesStore";
 describe("FavoritesStore", () => {
   beforeEach(() => {
     // Mock localStorage
@@ -34,10 +33,10 @@ describe("FavoritesStore", () => {
 
     expect(favoritesStore.favorites.length).toBe(1);
     expect(favoritesStore.favorites[0]).toMatchObject(token);
-    // expect(localStorage.setItem).toHaveBeenCalledWith(
-    //   "favorites",
-    //   JSON.stringify(favoritesStore.favorites)
-    // );
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      "favorites",
+      JSON.stringify(favoritesStore.favorites)
+    );
   });
 
   it("does not add a duplicate favorite", () => {
@@ -48,13 +47,21 @@ describe("FavoritesStore", () => {
     expect(favoritesStore.favorites.length).toBe(1); // Should still be 1
   });
 
+  it("should not access localStorage during SSR", () => {
+    jest.spyOn(global, "window", "get").mockReturnValue(undefined); // Mock window as undefined
+
+    const store = new (require("../../FavoritesStore").FavoritesStore)(); // Re-import store
+
+    expect(store.favorites).toEqual([]); // Should be an empty array
+  });
+
   it("removes a favorite token correctly", () => {
     const token = { name: "Bitcoin", symbol: "BTC" };
     favoritesStore.addFavorite(token);
     favoritesStore.removeFavorite(token.name);
 
     expect(favoritesStore.favorites.length).toBe(0);
-    // expect(localStorage.setItem).toHaveBeenCalledWith("favorites", "[]");
+    expect(localStorage.setItem).toHaveBeenCalledWith("favorites", "[]");
   });
 
   it("returns true if a token is a favorite", () => {
