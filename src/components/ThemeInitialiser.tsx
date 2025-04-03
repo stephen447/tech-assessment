@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-
+// This component initializes the theme based on user preference or system settings, in separate component to prevent ssr issues
 const ThemeInitializer: React.FC = () => {
   useEffect(() => {
     const savedTheme: string | null = localStorage.getItem("theme");

@@ -8,7 +8,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-//TypeScript types
+// TypeScript types
 interface BlockData {
   Date: string;
   Time: string;

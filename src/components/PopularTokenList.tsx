@@ -38,10 +38,12 @@ const PopularTokenList: React.FC = () => {
   const [isClient, setIsClient] = useState<boolean>(false);
   const [fetchKey, setFetchKey] = useState<number>(0);
 
+  // Get today's date at midnight UTC in ISO format for the graph ql query
   const todayMidnightUTC = new Date();
   todayMidnightUTC.setUTCHours(0, 0, 0, 0);
   const todayISO = todayMidnightUTC.toISOString();
 
+  // Set up an interval to refresh the data every minute
   useEffect(() => {
     setIsClient(true);
     const intervalId = setInterval(() => {
