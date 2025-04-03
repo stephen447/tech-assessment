@@ -48,18 +48,6 @@ describe("SearchResults Component", () => {
     });
   });
 
-  //   test("renders the loading state before data is fetched", () => {
-  //     (useLazyLoadQuery as jest.Mock).mockReturnValue(null);
-
-  //     render(
-  //       <RelayEnvironmentProvider environment={RelayEnvironment}>
-  //         <SearchResults />
-  //       </RelayEnvironmentProvider>
-  //     );
-
-  //     expect(screen.getByText("Loading...")).toBeInTheDocument();
-  //   });
-
   test("renders search results correctly", () => {
     (useLazyLoadQuery as jest.Mock).mockReturnValue({
       EVM: {

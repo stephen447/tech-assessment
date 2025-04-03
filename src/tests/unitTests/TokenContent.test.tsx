@@ -23,7 +23,7 @@ jest.mock("../../components/DisplayError", () => ({
   default: jest.fn(() => <div>Mocked DisplayError</div>),
 }));
 
-describe("TokenPageContent", () => {
+describe("TokenContent Component", () => {
   beforeEach(() => {
     // Reset all mocks before each test
     jest.clearAllMocks();
@@ -37,8 +37,6 @@ describe("TokenPageContent", () => {
   });
 
   it("should render the token price graph when data is available", async () => {
-    // Mock searchParams and params
-
     // Mock useLazyLoadQuery response
     const mockData = {
       EVM: {

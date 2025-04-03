@@ -5,7 +5,6 @@ import "@testing-library/jest-dom";
 describe("DisplayError Component", () => {
   it("renders the error message correctly", () => {
     render(<DisplayError />);
-
     // Check if the error message is displayed
     expect(
       screen.getByText("Error loading data. Please try again.")

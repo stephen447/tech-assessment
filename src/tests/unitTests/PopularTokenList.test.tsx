@@ -10,7 +10,7 @@ jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
 }));
 
-describe("PopularTokenList", () => {
+describe("PopularTokenList Component", () => {
   beforeEach(() => {
     jest.useFakeTimers();
   });

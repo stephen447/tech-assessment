@@ -45,30 +45,4 @@ describe("TokenGraph Component", () => {
     render(<TokenGraph prices={[]} />);
     expect(screen.getByText("No price data available")).toBeInTheDocument();
   });
-
-  // it("does not render the tooltip content when payload is empty", () => {
-  //   render(<TokenGraph prices={mockPrices} />);
-
-  //   // Trigger the tooltip, typically by hovering over a graph point (you can adjust based on your testing setup)
-  //   const graphPoint = screen.getByTestId("token-graph-point-0");
-  //   fireEvent.mouseOver(graphPoint);
-
-  //   // Ensure that the tooltip content is rendered when payload has data
-  //   expect(screen.getByRole("tooltip")).toBeInTheDocument();
-
-  //   // Simulate an empty payload
-  //   render(
-  //     <TokenGraph
-  //       prices={[
-  //         {
-  //           Block: { Date: "", Time: "" },
-  //           Trade: { Buy: { Currency: { Name: "", Symbol: "" }, Price: 0 } },
-  //         },
-  //       ]}
-  //     />
-  //   );
-
-  //   // Check that the tooltip is not rendered when payload is empty
-  //   expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
-  // });
 });

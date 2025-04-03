@@ -12,7 +12,7 @@ jest.mock("../../app/search/page", () => {
   return MockSearchPage;
 });
 
-describe("SearchPage Component", () => {
+describe("SearchPage", () => {
   test("renders the SearchResults component inside Relay provider", () => {
     render(
       <RelayEnvironmentProvider environment={RelayEnvironment}>

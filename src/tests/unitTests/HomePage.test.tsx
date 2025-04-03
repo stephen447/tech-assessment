@@ -15,7 +15,7 @@ jest.mock("../../components/PopularTokenList", () => ({
   default: () => <div>Popular Cryptos Mocked</div>,
 }));
 
-describe("Home Page unit tests", () => {
+describe("Home Page", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>;
   let mockPush: jest.Mock;
 

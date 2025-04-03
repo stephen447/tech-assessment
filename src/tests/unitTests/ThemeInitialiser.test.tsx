@@ -51,38 +51,4 @@ describe("ThemeInitializer", () => {
     // Verify that light theme is applied by checking the document class
     expect(document.documentElement.classList.contains("dark")).toBe(false);
   });
-
-  //   it("applies dark theme based on system preference when no localStorage theme is set", () => {
-  //     // Mock localStorage to return null
-  //     localStorage.removeItem("theme");
-
-  //     // Mock matchMedia to simulate dark mode preference
-  //     window.matchMedia = jest.fn().mockImplementation((query) => ({
-  //       matches: query === "(prefers-color-scheme: dark)", // Simulate dark mode system preference
-  //       addListener: jest.fn(),
-  //       removeListener: jest.fn(),
-  //     }));
-
-  //     render(<ThemeInitializer />);
-
-  //     // Verify that dark theme is applied based on system preference
-  //     expect(document.documentElement.classList.contains("dark")).toBe(true);
-  //   });
-
-  //   it("applies light theme based on system preference when no localStorage theme is set", () => {
-  //     // Mock localStorage to return null
-  //     localStorage.removeItem("theme");
-
-  //     // Mock matchMedia to simulate light mode preference
-  //     window.matchMedia = jest.fn().mockImplementation((query) => ({
-  //       matches: query === "(prefers-color-scheme: dark)", // Simulate light mode system preference
-  //       addListener: jest.fn(),
-  //       removeListener: jest.fn(),
-  //     }));
-
-  //     render(<ThemeInitializer />);
-
-  //     // Verify that light theme is applied based on system preference
-  //     expect(document.documentElement.classList.contains("dark")).toBe(false);
-  //   });
 });

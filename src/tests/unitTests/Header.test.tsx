@@ -36,11 +36,10 @@ describe("Header Component", () => {
   });
 
   it("should toggle dark mode when button is clicked", () => {
-    //
     const { getByRole } = render(<Header title="Test Title" />);
     const toggleButton = getByRole("button", { name: /mode/i });
 
-    //  It should be light by default
+    // It should be light by default
     expect(document.documentElement.classList.contains("dark")).toBe(false);
     expect(toggleButton).toHaveTextContent("Light");
 
@@ -57,6 +56,7 @@ describe("Header Component", () => {
     expect(toggleButton).toHaveTextContent("Light");
   });
 });
+
 describe("Header Component - local storage", () => {
   // Mock localStorage methods before each test
   beforeEach(() => {

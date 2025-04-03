@@ -1,6 +1,6 @@
 import { fetchGraphQL } from "../../app/relayEnvironment"; // Adjust path if needed
 
-describe("fetchGraphQL", () => {
+describe("Relay Environment", () => {
   // set up before each test
   beforeEach(() => {
     // Mocking the fetch function to return some sample json data - dont want to actually send request to api server
