@@ -48,12 +48,12 @@ const Header: React.FC<HeaderProps> = observer(({ title }) => {
 
   return (
     <header
-      className="flex items-center justify-between p-4 bg-background_light dark:bg-background_dark shadow-lg border-b-4 border-border_light dark:border-border_dark h-[10%]"
+      className="flex items-center justify-between p-3 md:p-4 bg-background_light dark:bg-background_dark shadow-lg border-b-4 border-border_light dark:border-border_dark min-h-[60px] md:min-h-[80px]"
       role="banner"
     >
       <ThemeInitializer />
 
-      {/* Logo with aria-label for better accessibility */}
+      {/* Logo */}
       <Link
         href="/"
         className="flex-shrink-0 focus:ring-4"
@@ -63,26 +63,28 @@ const Header: React.FC<HeaderProps> = observer(({ title }) => {
       </Link>
 
       {/* Title */}
-      <h1 className="text-3xl font-bold flex-grow text-center">{title}</h1>
+      <h1 className="text-2xl md:text-3xl font-bold flex-grow text-center">
+        {title}
+      </h1>
 
-      {/* Favorites Button with Heart Icon */}
+      {/* Favorites Button */}
       <Link
         href="/favourites"
         aria-label="View favorites"
-        className="relative px-3"
+        className="relative w-fit px-3"
         role="button"
         data-testid="favorites-link"
       >
         <FontAwesomeIcon
           icon={solidHeart}
-          className="text-3xl text-red-500 hover:text-red-700 transition cursor-pointer"
+          className="text-2xl md:text-3xl text-red-500 hover:text-red-700 transition cursor-pointer"
         />
       </Link>
 
       {/* Dark Mode Toggle */}
       <button
         onClick={toggleDarkMode}
-        className="focus:ring-4 border-2 border-border_light dark:border-border_dark rounded-lg p-2 hover:bg-background_light dark:hover:bg-background_dark transition"
+        className="focus:ring-4 border-2 border-border_light dark:border-border_dark rounded-lg p-2 md:p-3 hover:bg-background_light dark:hover:bg-background_dark transition"
       >
         {darkMode ? "Dark" : "Light"} Mode
       </button>

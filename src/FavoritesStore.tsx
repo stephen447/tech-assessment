@@ -12,11 +12,9 @@ class FavoritesStore {
 
   constructor() {
     makeAutoObservable(this);
-    //this.favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
     if (typeof window !== "undefined") {
       this.favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
     }
-    this.favorites = [];
   }
 
   addFavorite(token: { name: string; symbol: string }) {
