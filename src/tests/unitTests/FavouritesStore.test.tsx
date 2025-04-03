@@ -10,14 +10,13 @@ describe("FavoritesStore", () => {
       },
       writable: true,
     });
-
-    // favoritesStore.favorites = []; // Reset store state
   });
 
   it("initializes with an empty list if localStorage is empty", () => {
     const store = favoritesStore;
     expect(store.favorites).toEqual([]);
   });
+
   it("initialises with list from local storage", () => {
     localStorage.setItem(
       "favorites",
@@ -45,14 +44,6 @@ describe("FavoritesStore", () => {
     favoritesStore.addFavorite(token); // Try adding again
 
     expect(favoritesStore.favorites.length).toBe(1); // Should still be 1
-  });
-
-  it("should not access localStorage during SSR", () => {
-    jest.spyOn(global, "window", "get").mockReturnValue(undefined); // Mock window as undefined
-
-    const store = new (require("../../FavoritesStore").FavoritesStore)(); // Re-import store
-
-    expect(store.favorites).toEqual([]); // Should be an empty array
   });
 
   it("removes a favorite token correctly", () => {

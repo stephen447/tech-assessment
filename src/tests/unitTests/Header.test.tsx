@@ -1,44 +1,46 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import Header from "../../components/Header";
 
+// Mock the logo
 jest.mock("../../components/Logo", () => {
   const Logo = () => <div data-testid="logo">Logo</div>;
   Logo.displayName = "Logo";
   return Logo;
 });
+
 beforeEach(() => {
+  //  reset the localStorage before each test and remove the dark class
   document.documentElement.classList.remove("dark");
   localStorage.clear();
 });
 
 describe("Header Component", () => {
   test("renders the title correctly", () => {
-    render(<Header title="Crypto Pro" />);
-
-    expect(screen.getByText("Crypto Pro")).toBeInTheDocument();
+    render(<Header title="Crypto Sphere" />);
+    expect(screen.getByText("Crypto Sphere")).toBeInTheDocument();
   });
 
   test("renders the logo as a link to the home page", () => {
-    render(<Header title="Crypto Pro" />);
-
+    render(<Header title="Crypto Sphere" />);
     const logoLink = screen.getByRole("link", { name: /home/i });
     expect(logoLink).toHaveAttribute("href", "/");
     expect(screen.getByTestId("logo")).toBeInTheDocument();
   });
 
   test("ensures the header has the correct styles", () => {
-    render(<Header title="Crypto Pro" />);
-
+    render(<Header title="Crypto Sphere" />);
     const headerElement = screen.getByRole("banner");
     expect(headerElement).toHaveClass(
-      "flex items-center justify-between p-4 bg-background_light dark:bg-background_dark shadow-lg border-b-4 border-border_light dark:border-border_dark h-[10%]"
+      "flex items-center justify-between p-3 md:p-4 bg-background_light dark:bg-background_dark shadow-lg border-b-4 border-border_light dark:border-border_dark min-h-[60px] md:min-h-[80px]"
     );
   });
+
   it("should toggle dark mode when button is clicked", () => {
+    //
     const { getByRole } = render(<Header title="Test Title" />);
     const toggleButton = getByRole("button", { name: /mode/i });
 
-    // Initially: should not have 'dark' class
+    //  It should be light by default
     expect(document.documentElement.classList.contains("dark")).toBe(false);
     expect(toggleButton).toHaveTextContent("Light");
 
@@ -55,7 +57,7 @@ describe("Header Component", () => {
     expect(toggleButton).toHaveTextContent("Light");
   });
 });
-describe("Header Component", () => {
+describe("Header Component - local storage", () => {
   // Mock localStorage methods before each test
   beforeEach(() => {
     const mockLocalStorage = (function () {
@@ -74,6 +76,7 @@ describe("Header Component", () => {
       };
     })();
 
+    // Add mocked localStorage to the window object
     Object.defineProperty(window, "localStorage", {
       value: mockLocalStorage,
     });
@@ -105,34 +108,11 @@ describe("Header Component", () => {
     // After clicking the button, the theme should change to dark
     expect(screen.getByText("Dark Mode")).toBeInTheDocument();
     expect(document.documentElement.classList.contains("dark")).toBe(true);
-
-    // Verify that localStorage is updated to 'dark'
-    // expect(localStorage.setItem).toHaveBeenCalledWith("theme", "dark");
   });
 
-  it("updates localStorage when theme is toggled", () => {
-    // Mock the initial localStorage value
-    localStorage.setItem("theme", "light");
-
-    render(<Header title="Test Title" />);
-
-    // Simulate a button click to toggle to dark mode
-    fireEvent.click(screen.getByText("Light Mode"));
-
-    // Verify that localStorage is updated to 'dark'
-    // expect(localStorage.setItem).toHaveBeenCalledWith("theme", "dark");
-
-    // Simulate another button click to toggle back to light mode
-    fireEvent.click(screen.getByText("Dark Mode"));
-
-    // Verify that localStorage is updated to 'light'
-    // expect(localStorage.setItem).toHaveBeenCalledWith("theme", "light");
-  });
   it("tests link to favourites page", () => {
     render(<Header title="Test Title" />);
-
     const link = screen.getByTestId("favorites-link");
-    console.log(link);
     expect(link).toHaveAttribute("href", "/favourites");
   });
 

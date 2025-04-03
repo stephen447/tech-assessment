@@ -1,31 +1,27 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { favoritesStore } from "../../FavoritesStore";
-import FavoritesPage from "../../app/favourites/page"; // Adjust based on your file structure
-// import { useRouter } from "next/router";
+import FavoritesPage from "../../app/favourites/page";
 
-// Mock the Next.js `useRouter` hook
-// jest.mock("next/router", () => ({
-//   useRouter: jest.fn(),
-// }));
+// Mock the FavouriteItem component to isolate the test from its implementation
+jest.mock("../../components/FavouriteItem", () => ({
+  __esModule: true,
+  default: ({
+    token,
+    onRemove,
+  }: {
+    token: { id: string; name: string };
+    onRemove: () => void;
+  }) => (
+    <div>
+      <span data-testid={`favorite-${token.id}`}>{token.name}</span>
+      <button onClick={onRemove} data-testid={`remove-${token.id}`}>
+        Remove
+      </button>
+    </div>
+  ),
+}));
 
-jest.mock("../../components/FavouriteItem", () => {
-  return {
-    __esModule: true,
-    default: ({
-      token,
-      onRemove,
-    }: {
-      token: { name: string };
-      onRemove: () => void;
-    }) => (
-      <div>
-        {token.name}
-        <button onClick={onRemove}>Remove</button>
-      </div>
-    ),
-  };
-});
-
+// Mock the FavoritesStore
 jest.mock("../../FavoritesStore", () => ({
   favoritesStore: {
     favorites: [],
@@ -34,53 +30,44 @@ jest.mock("../../FavoritesStore", () => ({
 }));
 
 describe("FavoritesPage", () => {
-  // Test 1: Render "No favorites added yet" when the favorites list is empty
+  beforeEach(() => {
+    // Reset the store and mock functions before each test
+    favoritesStore.favorites = [];
+    // favoritesStore.removeFavorite.mockClear();
+  });
+
   it("renders 'No favorites added yet' when the favorites list is empty", () => {
-    favoritesStore.favorites = []; // Ensure favorites is empty
     render(<FavoritesPage />);
 
     const noFavoritesMessage = screen.getByTestId("no-favorites");
     expect(noFavoritesMessage).toBeInTheDocument();
   });
 
-  // Test 2: Render a list of favorite items when favorites are present
-  it("renders a list of favorite items", () => {
+  it("renders a list of favorite items when favorites exist", () => {
     favoritesStore.favorites = [
-      { id: "1", name: "Favorite 1" },
-      { id: "2", name: "Favorite 2" },
+      { id: "1", name: "Bitcoin" },
+      { id: "2", name: "Ethereum" },
     ];
 
     render(<FavoritesPage />);
 
-    expect(screen.getByText("Favorite 1")).toBeInTheDocument();
-    expect(screen.getByText("Favorite 2")).toBeInTheDocument();
+    expect(screen.getByTestId("favorite-1")).toHaveTextContent("Bitcoin");
+    expect(screen.getByTestId("favorite-2")).toHaveTextContent("Ethereum");
   });
 
-  // Test 3: Calls removeFavorite method when a favorite is removed
-  //   it("removes a favorite item when the remove button is clicked", () => {
-  //     favoritesStore.favorites = [
-  //       { id: "1", name: "Favorite 1" },
-  //       { id: "2", name: "Favorite 2" },
-  //     ];
-
-  //     render(<FavoritesPage />);
-
-  //     // Assuming each favorite item has a remove button, find the first one
-  //     const removeButton = screen.getAllByRole("button")[0]; // Adjust if your button has a specific role
-  //     fireEvent.click(removeButton);
-
-  //     // Ensure the removeFavorite method was called with the correct argument
-  //     expect(favoritesStore.removeFavorite).toHaveBeenCalledWith("1");
-  //   });
-
-  // Test 4: Snapshot test to ensure UI consistency
-  it("matches the snapshot when favorites are available", () => {
+  it("removes a favorite item when the remove button is clicked", () => {
     favoritesStore.favorites = [
-      { id: "1", name: "Favorite 1" },
-      { id: "2", name: "Favorite 2" },
+      { id: "1", name: "Bitcoin" },
+      { id: "2", name: "Ethereum" },
     ];
 
-    const { asFragment } = render(<FavoritesPage />);
-    expect(asFragment()).toMatchSnapshot();
+    render(<FavoritesPage />);
+
+    // Click remove button for the first favorite
+    const removeButton = screen.getByTestId("remove-1");
+    fireEvent.click(removeButton);
+
+    // Ensure the removeFavorite method was called with the correct ID
+    expect(favoritesStore.removeFavorite).toHaveBeenCalledWith("Bitcoin");
   });
 });
